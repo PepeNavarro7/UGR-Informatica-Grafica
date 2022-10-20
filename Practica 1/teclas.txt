@@ -1,0 +1,6 @@
+1 Modo vertices
+2 Modo Aristas
+3 Modo Solido
+4 Modo Mezcla de colores
+5 Modo Completo
+0 Modo Vacío
