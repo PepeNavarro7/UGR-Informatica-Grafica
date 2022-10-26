@@ -47,11 +47,36 @@ _jirafa jirafa;
 
 // Animacion
 // A traves de flags, definimos los giros maximos y la vuelta de los giros
-float giro1=0;
-int animado=false;
+int paso=0;
+bool animado=false;
+bool flag_cola=true;
 void animacion(){
-    jirafa.giro_cuerpo+=giro1;
-    glutPostRedisplay();
+    if(animado){
+        switch(paso){
+            case 0: 
+                jirafa.giro_cuerpo+=1;
+                if(jirafa.giro_cuerpo>=180){
+                    jirafa.giro_cuerpo=180;
+                    paso=1;
+                }
+                break;
+            case 1:
+                if(flag_cola){
+                    jirafa.giro_cola+=1;
+                    if (jirafa.giro_cola >= jirafa.giro_cola_max){
+                        jirafa.giro_cola = jirafa.giro_cola_max;
+                        flag_cola=false;
+                    }
+                } else{
+                    jirafa.giro_cola-=1;
+                    if (jirafa.giro_cola <= jirafa.giro_cola_min){
+                        jirafa.giro_cola = jirafa.giro_cola_min;
+                        flag_cola=true;
+                    }
+                }           
+        }
+        glutPostRedisplay();
+    }
 }
 
 //**************************************************************************
@@ -210,10 +235,8 @@ switch (toupper(Tecla1)){
     case 'M': t_objeto=JIRAFA; break;
     case 'S':
                 if(!animado){
-                    giro1=1;
                     animado=true;
                 } else{
-                    giro1=0;
                     animado=false;
                 }
 	}
