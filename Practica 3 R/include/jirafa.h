@@ -49,6 +49,14 @@ class _cuello: public _triangulos3D{
               _cilindro cilindro;
 
 };
+class _articulacion: public _triangulos3D{
+       public: 
+              _articulacion();
+              float radio;
+              void draw(_modo modo, float r, float g, float b, float grosor);
+       protected:
+              _esfera esfera;
+};
 
 class _jirafa: public _triangulos3D{
        public:
@@ -70,6 +78,7 @@ class _jirafa: public _triangulos3D{
        _cuerpo cuerpo;
        _cola cola;
        _cuello cuello; // cuello tiene 2 partes
+       _articulacion articulacion;
 };
 
 #endif

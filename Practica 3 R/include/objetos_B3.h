@@ -136,7 +136,7 @@ public:
 class _esfera: public _rotacion
 {
 public:
-       _esfera(float radio, int num1, int num2);
+       _esfera(float radio=1.0, int num1=12, int num2=12);
 };
 
 

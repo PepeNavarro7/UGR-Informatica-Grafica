@@ -18,8 +18,8 @@ void _cuerpo::draw(_modo modo, float r, float g, float b, float grosor){
 };
 
 _cola::_cola(){
-  largo=0.3;
-  ancho=0.05;
+  largo=0.25;
+  ancho=0.04;
 }
 
 void _cola::draw(_modo modo, float r, float g, float b, float grosor){
@@ -33,8 +33,8 @@ void _cola::draw(_modo modo, float r, float g, float b, float grosor){
 }
 
 _cuello::_cuello(){
-  this->largo=0.3;
-  this->ancho=0.075;
+  this->largo=0.25;
+  this->ancho=0.065;
 }
 void _cuello::draw(_modo modo, float r, float g, float b, float grosor){
   glPushMatrix();
@@ -45,18 +45,31 @@ void _cuello::draw(_modo modo, float r, float g, float b, float grosor){
   glPopMatrix();
 }
 
+_articulacion::_articulacion(){
+  radio=0.065;
+}
+
+void _articulacion::draw(_modo modo, float r, float g, float b, float grosor){
+  glPushMatrix();
+
+  glScalef(radio, radio, radio);
+  esfera.draw(modo, r, g, b, grosor);
+
+  glPopMatrix();
+}
+
 _jirafa::_jirafa(){
   giro_cuerpo=0.0;
   giro_cola=0.0;
   giro_cuello_1=0.0;
-  giro_cuello_2=0.0;
+  giro_cuello_2=15.0;
 
 
   giro_cola_max=0.0;
   giro_cola_min=-75.0;
-  giro_cuello_1_max=90;
+  giro_cuello_1_max=60;
   giro_cuello_1_min=0;
-  giro_cuello_2_max=90;
+  giro_cuello_2_max=60;
   giro_cuello_2_min=0;
 }
 
@@ -74,9 +87,16 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     glTranslatef(cuello.ancho-cuerpo.ancho/2,-cuello.ancho+cuerpo.alto/2, 0);
     glRotatef(this->giro_cuello_1,0,0,1);
     glTranslatef(0,cuello.largo,0);
-    this->cuello.draw(modo,r,g,b,grosor);
+    this->cuello.draw(modo,1,0,0,grosor);
 
-    this->cuello.draw(modo,r,g,b,grosor);
+    // Tras la primera parte del cuello, una esfera que haga de articulacion
+    glTranslatef(0,cuello.largo,0);
+    this->articulacion.draw(modo,0,1,0,grosor);
+
+    // Segunda parte del cuello
+    glRotatef(this->giro_cuello_2,0,0,1);
+    glTranslatef(0,cuello.largo,0);
+    this->cuello.draw(modo,0,0,1,grosor);
 
   glPopMatrix();
 
@@ -86,10 +106,5 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     glRotatef(this->giro_cola,0,0,1);
     glTranslatef(cola.largo,0,0);
     this->cola.draw(modo,r,g,b,grosor);
-  glPopMatrix();
-  
-
-  
-  
-  
+  glPopMatrix();  
 }

@@ -53,27 +53,28 @@ bool flag_cola=true;
 void animacion(){
     if(animado){
         switch(paso){
-            case 0: 
-                jirafa.giro_cuerpo+=1;
-                if(jirafa.giro_cuerpo>=180){
-                    jirafa.giro_cuerpo=180;
-                    paso=1;
+        case 0: 
+            jirafa.giro_cuerpo+=1;
+            if(jirafa.giro_cuerpo>=180){
+                jirafa.giro_cuerpo=180;
+                paso=1;
+            }
+            break;
+        case 1:
+            if(flag_cola){
+                jirafa.giro_cola+=1;
+                if (jirafa.giro_cola >= jirafa.giro_cola_max){
+                    jirafa.giro_cola = jirafa.giro_cola_max;
+                    flag_cola=false;
                 }
-                break;
-            case 1:
-                if(flag_cola){
-                    jirafa.giro_cola+=1;
-                    if (jirafa.giro_cola >= jirafa.giro_cola_max){
-                        jirafa.giro_cola = jirafa.giro_cola_max;
-                        flag_cola=false;
-                    }
-                } else{
-                    jirafa.giro_cola-=1;
-                    if (jirafa.giro_cola <= jirafa.giro_cola_min){
-                        jirafa.giro_cola = jirafa.giro_cola_min;
-                        flag_cola=true;
-                    }
-                }           
+            } else{
+                jirafa.giro_cola-=1;
+                if (jirafa.giro_cola <= jirafa.giro_cola_min){
+                    jirafa.giro_cola = jirafa.giro_cola_min;
+                    flag_cola=true;
+                }
+            }
+            break;          
         }
         glutPostRedisplay();
     }
@@ -165,7 +166,7 @@ switch (t_objeto){
         case ESFERA: esfera.draw(modo,1.0,0.0,0.0,5);break;
         case EXCAVADORA: excavadora.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
-    case JIRAFA: jirafa.draw(modo,0.0,0.0,1.0,5); break;
+    case JIRAFA: jirafa.draw(modo,0.0,0.0,0.0,5); break;
 	}
 
 }
@@ -306,11 +307,17 @@ void special_key(int Tecla1,int x,int y){
             excavadora.giro_pala+=1;
             if (excavadora.giro_pala > excavadora.giro_pala_max)
                 excavadora.giro_pala = excavadora.giro_pala_max;
+            jirafa.giro_cuello_2+=2;
+            if (jirafa.giro_cuello_2 > jirafa.giro_cuello_2_max)
+                jirafa.giro_cuello_2 = jirafa.giro_cuello_2_max;
             break;
         case GLUT_KEY_F8:
             excavadora.giro_pala-=1;
             if (excavadora.giro_pala < excavadora.giro_pala_min)
             excavadora.giro_pala = excavadora.giro_pala_min;
+            jirafa.giro_cuello_2-=2;
+            if (jirafa.giro_cuello_2 < jirafa.giro_cuello_2_min)
+                jirafa.giro_cuello_2 = jirafa.giro_cuello_2_min;
         break;
 	}
     glutPostRedisplay();
