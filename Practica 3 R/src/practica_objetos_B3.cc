@@ -45,6 +45,15 @@ _jirafa jirafa;
 // _objeto_ply *ply;
 
 
+// Animacion
+// A traves de flags, definimos los giros maximos y la vuelta de los giros
+float giro1=0;
+int animado=false;
+void animacion(){
+    jirafa.giro_cuerpo+=giro1;
+    glutPostRedisplay();
+}
+
 //**************************************************************************
 //
 //***************************************************************************
@@ -54,6 +63,8 @@ void clean_window()
 
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
+
+
 
 
 //**************************************************************************
@@ -197,6 +208,14 @@ switch (toupper(Tecla1)){
         case 'A':t_objeto=EXCAVADORA;break;
         case 'X':t_objeto=EXTRUSION;break;
     case 'M': t_objeto=JIRAFA; break;
+    case 'S':
+                if(!animado){
+                    giro1=1;
+                    animado=true;
+                } else{
+                    giro1=0;
+                    animado=false;
+                }
 	}
 glutPostRedisplay();
 }
@@ -232,27 +251,33 @@ void special_key(int Tecla1,int x,int y){
             excavadora.giro_primer_brazo+=1;
             if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
                 excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;
-            jirafa.giro_cuello_1+=2;
-            if (jirafa.giro_cuello_1 > jirafa.giro_cuello_1_max)
-                jirafa.giro_cuello_1 = jirafa.giro_cuello_1_max;
+            jirafa.giro_cola+=2;
+            if (jirafa.giro_cola > jirafa.giro_cola_max)
+                jirafa.giro_cola = jirafa.giro_cola_max;
             break;
         case GLUT_KEY_F4:
             excavadora.giro_primer_brazo-=1;
             if (excavadora.giro_primer_brazo < excavadora.giro_primer_brazo_min)
                 excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_min;
-            jirafa.giro_cuello_1-=2;
-            if (jirafa.giro_cuello_1 < jirafa.giro_cuello_1_min)
-                jirafa.giro_cuello_1 = jirafa.giro_cuello_1_min;
+            jirafa.giro_cola-=2;
+            if (jirafa.giro_cola < jirafa.giro_cola_min)
+                jirafa.giro_cola = jirafa.giro_cola_min;
             break;
         case GLUT_KEY_F5:
             excavadora.giro_segundo_brazo+=1;
             if (excavadora.giro_segundo_brazo > excavadora.giro_segundo_brazo_max)
                 excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_max;
+            jirafa.giro_cuello_1+=2;
+            if (jirafa.giro_cuello_1 > jirafa.giro_cuello_1_max)
+                jirafa.giro_cuello_1 = jirafa.giro_cuello_1_max;
             break;
         case GLUT_KEY_F6:
             excavadora.giro_segundo_brazo-=1;
             if (excavadora.giro_segundo_brazo < excavadora.giro_segundo_brazo_min) 
                 excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_min;
+            jirafa.giro_cuello_1-=2;
+            if (jirafa.giro_cuello_1 < jirafa.giro_cuello_1_min)
+                jirafa.giro_cuello_1 = jirafa.giro_cuello_1_min;
             break;
         case GLUT_KEY_F7:
             excavadora.giro_pala+=1;
@@ -371,6 +396,8 @@ glutReshapeFunc(change_window_size);
 glutKeyboardFunc(normal_key);
 // asignación de la funcion llamada "tecla_Especial" al evento correspondiente
 glutSpecialFunc(special_key);
+
+glutIdleFunc(animacion);
 
 // funcion de inicialización
 initialize();
