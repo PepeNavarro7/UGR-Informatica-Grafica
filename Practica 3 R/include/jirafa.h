@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include "objetos_B3.h"
 
+const float ALTURA=1.0, ARTIC=0.065;
 
 //Parte mis clases
 class _cuerpo: public _triangulos3D{
@@ -21,7 +22,6 @@ class _cuerpo: public _triangulos3D{
               float ancho;
               float alto;
               float fondo;
-              float altura;
 
        protected:
               _cubo cubo;
@@ -52,10 +52,20 @@ class _cuello: public _triangulos3D{
 class _articulacion: public _triangulos3D{
        public: 
               _articulacion();
-              float radio;
               void draw(_modo modo, float r, float g, float b, float grosor);
+              float radio;
        protected:
               _esfera esfera;
+};
+
+class _pata: public _triangulos3D{
+       public:
+              _pata();
+              void draw(_modo modo, float r, float g, float b, float grosor);
+
+              float largo, ancho;
+       protected:
+              _cilindro cilindro;
 };
 
 class _jirafa: public _triangulos3D{
@@ -77,8 +87,9 @@ class _jirafa: public _triangulos3D{
        protected:
        _cuerpo cuerpo;
        _cola cola;
-       _cuello cuello; // cuello tiene 2 partes
+       _cuello cuello; // cuello son 2 partes
        _articulacion articulacion;
+       _pata pata;
 };
 
 #endif

@@ -118,7 +118,7 @@ void change_observer()
 // posicion del observador
 glMatrixMode(GL_MODELVIEW);
 glLoadIdentity();
-glTranslatef(0,0,-Observer_distance);
+glTranslatef(0,-ALTURA,-Observer_distance);
 glRotatef(Observer_angle_x,1,0,0);
 glRotatef(Observer_angle_y,0,1,0);
 }

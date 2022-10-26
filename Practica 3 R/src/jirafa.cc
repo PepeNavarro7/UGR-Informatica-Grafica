@@ -1,12 +1,10 @@
 #include "../include/jirafa.h"
 
 //Parte mis clases
-
 _cuerpo::_cuerpo(){
-  ancho = 1.5;
-  alto = 0.3;
-  fondo = 0.8;
-  altura = 1.0;
+  ancho = ALTURA*1.5;
+  alto = ALTURA*0.3;
+  fondo = ALTURA*0.8;
 }
 
 
@@ -18,8 +16,8 @@ void _cuerpo::draw(_modo modo, float r, float g, float b, float grosor){
 };
 
 _cola::_cola(){
-  largo=0.25;
-  ancho=0.04;
+  largo=ALTURA*0.25;
+  ancho=ARTIC*0.6;
 }
 
 void _cola::draw(_modo modo, float r, float g, float b, float grosor){
@@ -33,8 +31,8 @@ void _cola::draw(_modo modo, float r, float g, float b, float grosor){
 }
 
 _cuello::_cuello(){
-  this->largo=0.25;
-  this->ancho=0.065;
+  this->largo=ALTURA*0.25;
+  this->ancho=ARTIC;
 }
 void _cuello::draw(_modo modo, float r, float g, float b, float grosor){
   glPushMatrix();
@@ -46,7 +44,7 @@ void _cuello::draw(_modo modo, float r, float g, float b, float grosor){
 }
 
 _articulacion::_articulacion(){
-  radio=0.065;
+  radio=ARTIC;
 }
 
 void _articulacion::draw(_modo modo, float r, float g, float b, float grosor){
@@ -54,6 +52,19 @@ void _articulacion::draw(_modo modo, float r, float g, float b, float grosor){
 
   glScalef(radio, radio, radio);
   esfera.draw(modo, r, g, b, grosor);
+
+  glPopMatrix();
+}
+
+_pata::_pata(){
+  this->largo=ALTURA*0.5;
+  this->ancho=ARTIC;
+}
+void _pata::draw(_modo modo, float r, float g, float b, float grosor){
+  glPushMatrix();
+
+  glScalef(ancho, largo, ancho);
+  cilindro.draw(modo, r, g, b, grosor);
 
   glPopMatrix();
 }
@@ -74,14 +85,42 @@ _jirafa::_jirafa(){
 }
 
 void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
-  /*Hemos de respetar la jearquía
-  Como van en el mismo push-pop matrix, los cambios del rotate y translate del cuerpo, afectan al cuello tambien.
-  */ 
+  //Hemos de respetar la jerarquía
   glPushMatrix();
     // Desplazo y giro el cuerpo (en este da igual el orden)
     glRotatef(this->giro_cuerpo,0,1,0);
-    glTranslatef(0,cuerpo.altura,0);
+    glTranslatef(0,ALTURA+cuerpo.alto/2,0);
     this->cuerpo.draw(modo,r,g,b,grosor);
+
+    // Pierna delante izquierda
+    // No se pone en la esquina, se deja un pequeño offset (/2.4 en vez de /2)
+    glTranslatef(-cuerpo.ancho/3,-cuerpo.alto/2,+cuerpo.fondo/3);
+    this->articulacion.draw(modo,0,1,0,grosor);
+    glTranslatef(0,-ALTURA/2,0);
+    this->pata.draw(modo,0,0,1,grosor);
+
+    // Pierna detras izquierda
+    glTranslatef(0,ALTURA/2,-cuerpo.fondo/1.5);
+    this->articulacion.draw(modo,0,1,0,grosor);
+    glTranslatef(0,-ALTURA/2,0);
+    this->pata.draw(modo,0,0,1,grosor);
+
+    // Pierna detras derecha
+    glTranslatef(cuerpo.ancho/1.5,ALTURA/2,0);
+    this->articulacion.draw(modo,0,1,0,grosor);
+    glTranslatef(0,-ALTURA/2,0);
+    this->pata.draw(modo,0,0,1,grosor);
+
+    // Pierna delante derecha
+    glTranslatef(0,ALTURA/2,cuerpo.fondo/1.5);
+    this->articulacion.draw(modo,0,1,0,grosor);
+    glTranslatef(0,-ALTURA/2,0);
+    this->pata.draw(modo,0,0,1,grosor);
+  glPopMatrix();
+
+  glPushMatrix(); // Cuello y cabeza
+    glRotatef(this->giro_cuerpo,0,1,0);
+    glTranslatef(0,ALTURA+cuerpo.alto/2,0);
 
     // El cuello se centra en su base(empieza centrado en su mitad), se gira, y luego se coloca en su lugar
     glTranslatef(cuello.ancho-cuerpo.ancho/2,-cuello.ancho+cuerpo.alto/2, 0);
@@ -97,12 +136,13 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     glRotatef(this->giro_cuello_2,0,0,1);
     glTranslatef(0,cuello.largo,0);
     this->cuello.draw(modo,0,0,1,grosor);
-
   glPopMatrix();
 
-  glPushMatrix(); // La cola va aparte porque aunque sí le afecta el cuerpo, no la cabeza
+  glPushMatrix(); // Cola
     glRotatef(this->giro_cuerpo,0,1,0);
-    glTranslatef(cuerpo.ancho/2,cuerpo.altura,0.0);
+    glTranslatef(0,ALTURA+cuerpo.alto/2,0);
+
+    glTranslatef(cuerpo.ancho/2,0,0.0);
     glRotatef(this->giro_cola,0,0,1);
     glTranslatef(cola.largo,0,0);
     this->cola.draw(modo,r,g,b,grosor);
