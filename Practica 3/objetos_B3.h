@@ -273,21 +273,54 @@ class _cuerpo: public _triangulos3D{
               _cuerpo();
               void draw(_modo modo, float r, float g, float b, float grosor);
 
-       float ancho;
-       float alto;
-       float fondo;
-       float altura;
-       float giro;
+              float ancho;
+              float alto;
+              float fondo;
+              float altura;
 
        protected:
               _cubo cubo;
 };
 
-class _objetoMio: public _triangulos3D{
+class _cola: public _triangulos3D{
        public:
-              _objetoMio();
+              _cola();
               void draw(_modo modo, float r, float g, float b, float grosor);
+
+              float largo;
+              float ancho;
+       protected:
+              _cilindro cilindro;
+};
+
+class _cuello: public _triangulos3D{
+       public:
+              _cuello();
+              void draw(_modo modo, float r, float g, float b, float grosor);
+
+              float largo;
+              float ancho;
+       protected:
+              _cilindro cilindro;
+
+};
+
+class _jirafa: public _triangulos3D{
+       public:
+              _jirafa();
+              void draw(_modo modo, float r, float g, float b, float grosor);
+
+              float giro_cuerpo;
+              float giro_cola;
+              float giro_cuello_1;
+
+              float giro_cola_max;
+              float giro_cola_min;
+              float giro_cuello_1_max;
+              float giro_cuello_1_min;
        protected:
        _cuerpo cuerpo;
+       _cola cola;
+       _cuello cuello;
 };
 

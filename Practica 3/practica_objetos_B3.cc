@@ -13,9 +13,9 @@ using namespace std;
 
 // tipos
 typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, CILINDRO, CONO, ESFERA, EXTRUSION, EXCAVADORA,
-OBJETO_MIO} _tipo_objeto;
-_tipo_objeto t_objeto=OBJETO_MIO;
-_modo   modo=POINTS;
+JIRAFA} _tipo_objeto;
+_tipo_objeto t_objeto=JIRAFA;
+_modo   modo=SOLID_COLORS;
 
 // variables que definen la posicion de la camara en coordenadas polares
 GLfloat Observer_distance;
@@ -39,7 +39,7 @@ _cono cono(1,2,6);
 _esfera esfera(1,6,6);
 _excavadora excavadora;
 _extrusion *extrusion;
-_objetoMio objetoMio;
+_jirafa jirafa;
 
 // _objeto_ply *ply;
 
@@ -128,7 +128,7 @@ switch (t_objeto){
         case ESFERA: esfera.draw(modo,1.0,0.0,0.0,5);break;
         case EXCAVADORA: excavadora.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
-    case OBJETO_MIO: objetoMio.draw(modo,0.0,0.0,1.0,5); break;
+    case JIRAFA: jirafa.draw(modo,0.0,0.0,1.0,5); break;
 	}
 
 }
@@ -195,7 +195,7 @@ switch (toupper(Tecla1)){
         case 'E':t_objeto=ESFERA;break;
         case 'A':t_objeto=EXCAVADORA;break;
         case 'X':t_objeto=EXTRUSION;break;
-    case 'M': t_objeto=OBJETO_MIO; break;
+    case 'M': t_objeto=JIRAFA; break;
 	}
 glutPostRedisplay();
 }
@@ -210,39 +210,61 @@ glutPostRedisplay();
 
 //***************************************************************************
 
-void special_key(int Tecla1,int x,int y)
-{
-
-switch (Tecla1){
-   case GLUT_KEY_LEFT:Observer_angle_y--;break;
-   case GLUT_KEY_RIGHT:Observer_angle_y++;break;
-   case GLUT_KEY_UP:Observer_angle_x--;break;
-   case GLUT_KEY_DOWN:Observer_angle_x++;break;
-   case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
-   case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
-	
-   case GLUT_KEY_F1:excavadora.giro_cabina+=5;break;
-   case GLUT_KEY_F2:excavadora.giro_cabina-=5;break;
-   case GLUT_KEY_F3:excavadora.giro_primer_brazo+=1;
-        if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
-            excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;break;
-   case GLUT_KEY_F4:excavadora.giro_primer_brazo-=1;
-        if (excavadora.giro_primer_brazo < excavadora.giro_primer_brazo_min)
-            excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_min;break;
-   case GLUT_KEY_F5:excavadora.giro_segundo_brazo+=1;
-        if (excavadora.giro_segundo_brazo > excavadora.giro_segundo_brazo_max)
-            excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_max;break;
-   case GLUT_KEY_F6:excavadora.giro_segundo_brazo-=1;
-        if (excavadora.giro_segundo_brazo < excavadora.giro_segundo_brazo_min) 
-            excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_min;break;
-   case GLUT_KEY_F7:excavadora.giro_pala+=1;
-        if (excavadora.giro_pala > excavadora.giro_pala_max)
-            excavadora.giro_pala = excavadora.giro_pala_max;break;
-   case GLUT_KEY_F8:excavadora.giro_pala-=1;
-        if (excavadora.giro_pala < excavadora.giro_pala_min)
-            excavadora.giro_pala = excavadora.giro_pala_min;break;
+void special_key(int Tecla1,int x,int y){
+    switch (Tecla1){
+        case GLUT_KEY_LEFT:Observer_angle_y--; break;
+        case GLUT_KEY_RIGHT:Observer_angle_y++; break;
+        case GLUT_KEY_UP:Observer_angle_x--; break;
+        case GLUT_KEY_DOWN:Observer_angle_x++;break;
+        case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
+        case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
+        
+        case GLUT_KEY_F1:
+            excavadora.giro_cabina+=5;
+            jirafa.giro_cuerpo+=5;
+            break;
+        case GLUT_KEY_F2:
+            excavadora.giro_cabina-=5;
+            jirafa.giro_cuerpo-=5;
+            break;
+        case GLUT_KEY_F3:
+            excavadora.giro_primer_brazo+=1;
+            if (excavadora.giro_primer_brazo > excavadora.giro_primer_brazo_max)
+                excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_max;
+            jirafa.giro_cuello_1+=2;
+            if (jirafa.giro_cuello_1 > jirafa.giro_cuello_1_max)
+                jirafa.giro_cuello_1 = jirafa.giro_cuello_1_max;
+            break;
+        case GLUT_KEY_F4:
+            excavadora.giro_primer_brazo-=1;
+            if (excavadora.giro_primer_brazo < excavadora.giro_primer_brazo_min)
+                excavadora.giro_primer_brazo = excavadora.giro_primer_brazo_min;
+            jirafa.giro_cuello_1-=2;
+            if (jirafa.giro_cuello_1 < jirafa.giro_cuello_1_min)
+                jirafa.giro_cuello_1 = jirafa.giro_cuello_1_min;
+            break;
+        case GLUT_KEY_F5:
+            excavadora.giro_segundo_brazo+=1;
+            if (excavadora.giro_segundo_brazo > excavadora.giro_segundo_brazo_max)
+                excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_max;
+            break;
+        case GLUT_KEY_F6:
+            excavadora.giro_segundo_brazo-=1;
+            if (excavadora.giro_segundo_brazo < excavadora.giro_segundo_brazo_min) 
+                excavadora.giro_segundo_brazo = excavadora.giro_segundo_brazo_min;
+            break;
+        case GLUT_KEY_F7:
+            excavadora.giro_pala+=1;
+            if (excavadora.giro_pala > excavadora.giro_pala_max)
+                excavadora.giro_pala = excavadora.giro_pala_max;
+            break;
+        case GLUT_KEY_F8:
+            excavadora.giro_pala-=1;
+            if (excavadora.giro_pala < excavadora.giro_pala_min)
+            excavadora.giro_pala = excavadora.giro_pala_min;
+        break;
 	}
-glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 

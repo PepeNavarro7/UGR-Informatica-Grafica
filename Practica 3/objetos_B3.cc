@@ -78,10 +78,9 @@ void _triangulos3D::draw_solido(float r, float g, float b){
 //*************************************************************************
 
 void _triangulos3D::draw_solido_colores(){
-  int i;
   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
   glBegin(GL_TRIANGLES);
-  for (i=0;i<caras.size();i++){
+  for (long unsigned int i=0;i<caras.size();i++){
     glColor3f(colores_caras[i].r,colores_caras[i].g,colores_caras[i].b);
     glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
     glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
@@ -191,7 +190,6 @@ colors_random();
 
 _piramide::_piramide(float tam, float al)
 {
-int i;
 //vertices 
 vertices.resize(5); 
 vertices[0].x=-tam;vertices[0].y=0;vertices[0].z=tam;
@@ -225,17 +223,15 @@ _objeto_ply::_objeto_ply()
 
 
 
-void _objeto_ply::parametros(char *archivo)
-{
-int i, n_ver,n_car;
+void _objeto_ply::parametros(char *archivo){
+  int n_ver,n_car;
+  vector<float> ver_ply ;
+  vector<int>   car_ply ;
+  
+  _file_ply::read(archivo, ver_ply, car_ply );
 
-vector<float> ver_ply ;
-vector<int>   car_ply ;
- 
-_file_ply::read(archivo, ver_ply, car_ply );
-
-n_ver=ver_ply.size()/3;
-n_car=car_ply.size()/3;
+  n_ver=ver_ply.size()/3;
+  n_car=car_ply.size()/3;
 
 printf("Number of vertices=%d\nNumber of faces=%d\n", n_ver, n_car);
 
@@ -243,14 +239,14 @@ vertices.resize(n_ver);
 caras.resize(n_car);
 // vértices
 
-for (i=0;i<n_ver;i++)
+for (int i=0;i<n_ver;i++)
   {vertices[i].x=ver_ply[3*i];
    vertices[i].y=ver_ply[3*i+1];
    vertices[i].z=ver_ply[3*i+2];
   }
 
 // vértices
-for (i=0;i<n_car;i++)
+for (int i=0;i<n_car;i++)
   {caras[i].x=car_ply[3*i];
    caras[i].y=car_ply[3*i+1];
    caras[i].z=car_ply[3*i+2];
@@ -263,7 +259,7 @@ srand(10);
 float sum;
 int n;
 colores_caras.resize(caras.size());
-for (i=0;i<caras.size();i++)  
+for (long unsigned int i=0;i<caras.size();i++)  
   {if (vertices[caras[i]._0].y>=0) 
      {colores_caras[i].r=rand()%1000/1000.0;
       colores_caras[i].b=0.0;
@@ -690,29 +686,85 @@ glPopMatrix();
 };
 
 //Parte mis clases
-_objetoMio::_objetoMio(){
-}
-
-void _objetoMio::draw(_modo modo, float r, float g, float b, float grosor){
-  glPushMatrix();
-  this->cuerpo.draw(modo,r,g,b,grosor);
-  glPopMatrix();
-}
 
 _cuerpo::_cuerpo(){
   ancho = 2.0;
   alto = 0.4;
   fondo = 1.0;
   altura = 1.0;
-  giro = 45;
 }
 
 
 void _cuerpo::draw(_modo modo, float r, float g, float b, float grosor){
   glPushMatrix();
-  glRotatef(giro,0,1,0);
-  glTranslatef(0.0,altura,0.0);
   glScalef(ancho, alto, fondo);
   cubo.draw(modo, r, g, b, grosor);
   glPopMatrix();
 };
+
+_cola::_cola(){
+  largo=0.3;
+  ancho=0.05;
+}
+
+void _cola::draw(_modo modo, float r, float g, float b, float grosor){
+  glPushMatrix();
+
+  glRotatef(90,0,0,1);
+  glScalef(ancho, largo, ancho);
+  cilindro.draw(modo, r, g, b, grosor);
+
+  glPopMatrix();
+}
+
+_cuello::_cuello(){
+  this->largo=0.4;
+  this->ancho=0.1;
+}
+void _cuello::draw(_modo modo, float r, float g, float b, float grosor){
+  glPushMatrix();
+
+  //glRotatef(90,0,0,1);
+  glScalef(ancho, largo, ancho);
+  cilindro.draw(modo, r, g, b, grosor);
+
+  glPopMatrix();
+}
+
+_jirafa::_jirafa(){
+  giro_cuerpo=0.0;
+  giro_cola=0.0;
+  giro_cuello_1=0;
+
+  giro_cola_max=0.0;
+  giro_cola_min=-75.0;
+  giro_cuello_1_max=90;
+  giro_cuello_1_min=0;
+}
+
+void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
+  /*Hemos de respetar la jearquía
+  Como van en el mismo push-pop matrix, los cambios del rotate y translate del cuerpo, afectan al cuello tambien.
+  */ 
+  glPushMatrix();
+
+  glRotatef(this->giro_cuerpo,0,1,0);
+  glTranslatef(0,cuerpo.altura,0);
+  this->cuerpo.draw(modo,r,g,b,grosor);
+
+  glTranslatef(cuello.ancho-cuerpo.ancho/2,-cuello.ancho+cuerpo.alto/2, 0);
+  glRotatef(this->giro_cuello_1,0,0,1);
+  glTranslatef(0,cuello.largo,0);
+  this->cuello.draw(modo,r,g,b,grosor);
+
+
+  
+  /*glTranslatef(cuerpo.ancho/2,0.0,0.0);
+  glRotatef(this->giro_cola,0,0,1);
+  glTranslatef(cola.largo,0,0);
+  this->cola.draw(modo,r,g,b,grosor);*/
+
+  
+  
+  glPopMatrix();
+}
