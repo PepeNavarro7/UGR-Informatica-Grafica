@@ -69,6 +69,18 @@ void _pata::draw(_modo modo, float r, float g, float b, float grosor){
   glPopMatrix();
 }
 
+_cabeza::_cabeza(){
+  radio=2*ARTIC;
+}
+void _cabeza::draw(_modo modo, float r, float g, float b, float grosor){
+  glPushMatrix();
+
+  glScalef(radio, radio, radio);
+  esfera.draw(modo, r, g, b, grosor);
+
+  glPopMatrix();
+}
+
 _jirafa::_jirafa(){
   giro_cuerpo=0.0;
   giro_cola=0.0;
@@ -126,7 +138,7 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     glTranslatef(cuello.ancho-cuerpo.ancho/2,-cuello.ancho+cuerpo.alto/2, 0);
     glRotatef(this->giro_cuello_1,0,0,1);
     glTranslatef(0,cuello.largo,0);
-    this->cuello.draw(modo,1,0,0,grosor);
+    this->cuello.draw(modo,0,0,1,grosor);
 
     // Tras la primera parte del cuello, una esfera que haga de articulacion
     glTranslatef(0,cuello.largo,0);
@@ -135,7 +147,10 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     // Segunda parte del cuello
     glRotatef(this->giro_cuello_2,0,0,1);
     glTranslatef(0,cuello.largo,0);
-    this->cuello.draw(modo,0,0,1,grosor);
+    this->cuello.draw(modo,1,0,0,grosor);
+
+    /*glTranslatef(0,cuello.largo+cabeza.radio,0); // Cabeza al final del cuello
+    this->cabeza.draw(modo,0,0,1,grosor);*/
   glPopMatrix();
 
   glPushMatrix(); // Cola
@@ -145,6 +160,6 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     glTranslatef(cuerpo.ancho/2,0,0.0);
     glRotatef(this->giro_cola,0,0,1);
     glTranslatef(cola.largo,0,0);
-    this->cola.draw(modo,r,g,b,grosor);
-  glPopMatrix();  
+    this->cola.draw(modo,0,0,1,grosor);
+  glPopMatrix();
 }

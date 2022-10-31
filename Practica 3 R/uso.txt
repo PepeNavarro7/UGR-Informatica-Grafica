@@ -1,0 +1,28 @@
+Ejecutar con "make do"
+4 modos de dibujado:
+1 -> modo vertices
+2 -> modo aristas
+3 -> modo color sólido 
+4 -> modo sólido de colores aleatorios
+		
+8 cuerpos geométricos:
+C -> Cubo 
+E -> Esfera 
+L -> Cilindro 
+N -> Cono 
+O -> Objeto del que se posee el PLY 
+P -> Pirámide
+R -> Rotacion de un perfil
+X -> Extrusion de un polígono
+
+2 modelos jerárquicos articulados:
+A -> Excavadora
+M -> Jirafa
+
+S -> Activar/Desactivar animacion
+
+F1-F2 -> Girar cuerpo jirafa
+F3-F4 -> Girar cola
+F5-F6 -> Girar cuello entero
+F7-F8 -> Girar solo parte de arriba del cuello
+

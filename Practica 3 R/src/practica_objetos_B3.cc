@@ -13,8 +13,8 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, CILINDRO, CONO, ESFERA, EXTRUSION, EXCAVADORA,
-JIRAFA} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, CILINDRO, CONO, ESFERA, EXTRUSION, 
+                EXCAVADORA, JIRAFA} _tipo_objeto;
 _tipo_objeto t_objeto=JIRAFA;
 _modo   modo=SOLID_COLORS;
 
@@ -216,32 +216,35 @@ glutPostRedisplay();
 // posicion y del raton
 //***************************************************************************
 
-void normal_key(unsigned char Tecla1,int x,int y)
-{
-switch (toupper(Tecla1)){
-	case 'Q':exit(0);
-	case '1':modo=POINTS;break;
-	case '2':modo=EDGES;break;
-	case '3':modo=SOLID;break;
-	case '4':modo=SOLID_COLORS;break;
-        case 'P':t_objeto=PIRAMIDE;break;
-        case 'C':t_objeto=CUBO;break;
-        case 'O':t_objeto=OBJETO_PLY;break;	
-        case 'R':t_objeto=ROTACION;break;
-        case 'L':t_objeto=CILINDRO;break;
-        case 'N':t_objeto=CONO;break;
-        case 'E':t_objeto=ESFERA;break;
-        case 'A':t_objeto=EXCAVADORA;break;
-        case 'X':t_objeto=EXTRUSION;break;
-    case 'M': t_objeto=JIRAFA; break;
-    case 'S':
-                if(!animado){
-                    animado=true;
-                } else{
+void normal_key(unsigned char Tecla1,int x,int y){
+    switch (toupper(Tecla1)){
+        case 'Q':exit(0);
+        case '1':modo=POINTS;break;
+        case '2':modo=EDGES;break;
+        case '3':modo=SOLID;break;
+        case '4':modo=SOLID_COLORS;break;
+
+        case 'C': t_objeto = CUBO; break;
+        case 'E': t_objeto = ESFERA; break;
+        case 'L': t_objeto = CILINDRO; break;
+        case 'N': t_objeto = CONO; break;
+        case 'O': t_objeto = OBJETO_PLY; break;	
+        case 'P': t_objeto = PIRAMIDE; break;
+        case 'R': t_objeto = ROTACION; break;
+        case 'X': t_objeto = EXTRUSION; break;
+        
+        
+        case 'A': t_objeto = EXCAVADORA; break;
+        case 'M': t_objeto = JIRAFA; break;
+
+        case 'S':
+                if(animado)
                     animado=false;
-                }
-	}
-glutPostRedisplay();
+                else
+                    animado=true;
+                break;
+        }
+    glutPostRedisplay();
 }
 
 //***************************************************************************
@@ -427,6 +430,7 @@ glutKeyboardFunc(normal_key);
 // asignación de la funcion llamada "tecla_Especial" al evento correspondiente
 glutSpecialFunc(special_key);
 
+// Siempre que la apliacion este en idle, se llamará a la función animacion()
 glutIdleFunc(animacion);
 
 // funcion de inicialización
