@@ -84,12 +84,8 @@ class _jirafa: public _triangulos3D{
 
               float giro_cuerpo,giro_cola, giro_cuello_1, giro_cuello_2, giro_cabeza;
 
-              float giro_cola_max;
-              float giro_cola_min;
-              float giro_cuello_1_max;
-              float giro_cuello_1_min;
-              float giro_cuello_2_max;
-              float giro_cuello_2_min;
+              float giro_cola_max, giro_cola_min, giro_cuello_1_max, giro_cuello_1_min,
+              giro_cuello_2_max, giro_cuello_2_min, giro_cabeza_max, giro_cabeza_min;
        protected:
        _cuerpo cuerpo;
        _cola cola;

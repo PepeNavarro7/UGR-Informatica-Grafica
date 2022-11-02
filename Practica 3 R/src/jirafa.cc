@@ -77,7 +77,7 @@ void _cabeza::draw(_modo modo, float r, float g, float b, float grosor){
   glPushMatrix();
   glRotatef(90,0,1,0); // y lo roto
   glScalef(largo,largo,largo); // lo achico
-  glTranslatef(-0.25,-2,-0.5); // lo centro en el eje
+  glTranslatef(-0.25,-2,-1); // lo centro en el eje
   ply.draw(modo,r,g,b,grosor);
   glPopMatrix();
 }
@@ -85,17 +85,19 @@ void _cabeza::draw(_modo modo, float r, float g, float b, float grosor){
 _jirafa::_jirafa(){
   giro_cuerpo=0.0;
   giro_cola=0.0;
-  giro_cuello_1=0.0;
-  giro_cuello_2=15.0;
-  giro_cabeza=-80;
+  giro_cuello_1=20.0;
+  giro_cuello_2=20.0;
+  giro_cabeza=-60;
 
 
   giro_cola_max=0.0;
   giro_cola_min=-75.0;
-  giro_cuello_1_max=60;
-  giro_cuello_1_min=0;
-  giro_cuello_2_max=60;
-  giro_cuello_2_min=0;
+  giro_cuello_1_max=70;
+  giro_cuello_1_min=20;
+  giro_cuello_2_max=70;
+  giro_cuello_2_min=20;
+  giro_cabeza_max=-60;
+  giro_cabeza_min=-90;
 }
 
 void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){

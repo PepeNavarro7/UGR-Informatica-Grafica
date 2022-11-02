@@ -49,18 +49,51 @@ _jirafa jirafa;
 // A traves de flags, definimos los giros maximos y la vuelta de los giros
 int paso=0;
 bool animado=false;
-bool flag_cola=true;
+bool flag_cola=true, flag_cabeza=true;
 void animacion(){
     if(animado){
         switch(paso){
         case 0: 
+            jirafa.giro_cuerpo=0.0;
+            jirafa.giro_cola=0.0;
+            jirafa.giro_cuello_1=20.0;
+            jirafa.giro_cuello_2=20.0;
+            jirafa.giro_cabeza=-60;
+            paso=1;
+        case 1: 
             jirafa.giro_cuerpo+=1;
-            if(jirafa.giro_cuerpo>=180){
-                jirafa.giro_cuerpo=180;
-                paso=1;
+            if(jirafa.giro_cuerpo>=140){
+                jirafa.giro_cuerpo=140;
+                paso=2;
             }
             break;
-        case 1:
+        case 2:
+            jirafa.giro_cuello_1+=0.5;
+            if(jirafa.giro_cuello_1>=jirafa.giro_cuello_1_max){
+                jirafa.giro_cuello_1=jirafa.giro_cuello_1_max;
+                paso=3;
+            }
+        break;
+        case 3:
+            jirafa.giro_cuello_2+=0.5;
+            if(jirafa.giro_cuello_2>=jirafa.giro_cuello_2_max){
+                jirafa.giro_cuello_2=jirafa.giro_cuello_2_max;
+                paso=4;
+            }
+        break;
+        case 4:
+            jirafa.giro_cuello_2-=0.5;
+            jirafa.giro_cuello_1-=0.5;
+            if(jirafa.giro_cuello_2<=jirafa.giro_cuello_2_min){
+                jirafa.giro_cuello_2=jirafa.giro_cuello_2_min;
+                paso=5;
+            }
+            if(jirafa.giro_cuello_1<=jirafa.giro_cuello_1_min){
+                jirafa.giro_cuello_1=jirafa.giro_cuello_1_min;
+                paso=5;
+            }
+        break;
+        default:
             if(flag_cola){
                 jirafa.giro_cola+=1;
                 if (jirafa.giro_cola >= jirafa.giro_cola_max){
@@ -72,6 +105,19 @@ void animacion(){
                 if (jirafa.giro_cola <= jirafa.giro_cola_min){
                     jirafa.giro_cola = jirafa.giro_cola_min;
                     flag_cola=true;
+                }
+            }
+            if(flag_cabeza){
+                jirafa.giro_cabeza+=0.25;
+                if (jirafa.giro_cabeza >= jirafa.giro_cabeza_max){
+                    jirafa.giro_cabeza = jirafa.giro_cabeza_max;
+                    flag_cabeza=false;
+                }
+            } else{
+                jirafa.giro_cabeza-=0.25;
+                if (jirafa.giro_cabeza <= jirafa.giro_cabeza_min){
+                    jirafa.giro_cabeza = jirafa.giro_cabeza_min;
+                    flag_cabeza=true;
                 }
             }
             break;          
@@ -321,6 +367,16 @@ void special_key(int Tecla1,int x,int y){
             jirafa.giro_cuello_2-=2;
             if (jirafa.giro_cuello_2 < jirafa.giro_cuello_2_min)
                 jirafa.giro_cuello_2 = jirafa.giro_cuello_2_min;
+        break;
+        case GLUT_KEY_F9:
+            jirafa.giro_cabeza+=1;
+            if (jirafa.giro_cabeza > jirafa.giro_cabeza_max)
+                jirafa.giro_cabeza = jirafa.giro_cabeza_max;
+        break;
+        case GLUT_KEY_F10:
+            jirafa.giro_cabeza-=1;
+            if (jirafa.giro_cabeza < jirafa.giro_cabeza_min)
+                jirafa.giro_cabeza = jirafa.giro_cabeza_min;
         break;
 	}
     glutPostRedisplay();
