@@ -69,15 +69,16 @@ void _pata::draw(_modo modo, float r, float g, float b, float grosor){
   glPopMatrix();
 }
 
-_cabeza::_cabeza(){
-  radio=2*ARTIC;
+_cabeza::_cabeza(){ 
+  ply.parametros("txt/jirafa");
+  largo=ALTURA*0.08;
 }
 void _cabeza::draw(_modo modo, float r, float g, float b, float grosor){
   glPushMatrix();
-
-  glScalef(radio, radio, radio);
-  esfera.draw(modo, r, g, b, grosor);
-
+  glRotatef(90,0,1,0); // y lo roto
+  glScalef(largo,largo,largo); // lo achico
+  glTranslatef(-0.25,-2,-0.5); // lo centro en el eje
+  ply.draw(modo,r,g,b,grosor);
   glPopMatrix();
 }
 
@@ -86,6 +87,7 @@ _jirafa::_jirafa(){
   giro_cola=0.0;
   giro_cuello_1=0.0;
   giro_cuello_2=15.0;
+  giro_cabeza=-80;
 
 
   giro_cola_max=0.0;
@@ -149,8 +151,9 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     glTranslatef(0,cuello.largo,0);
     this->cuello.draw(modo,1,0,0,grosor);
 
-    /*glTranslatef(0,cuello.largo+cabeza.radio,0); // Cabeza al final del cuello
-    this->cabeza.draw(modo,0,0,1,grosor);*/
+    glTranslatef(0,cuello.largo,0); // Cabeza al final del cuello
+    glRotatef(this->giro_cabeza,0,0,1);
+    this->cabeza.draw(modo,0,0,1,grosor);
   glPopMatrix();
 
   glPushMatrix(); // Cola

@@ -72,10 +72,9 @@ class _cabeza: public _triangulos3D{
        public:
               _cabeza();
               void draw(_modo modo, float r, float g, float b, float grosor);
-
-              float radio;
+              float largo;
        protected:
-              _esfera esfera;
+             _objeto_ply ply;
 };
 
 class _jirafa: public _triangulos3D{
@@ -83,10 +82,7 @@ class _jirafa: public _triangulos3D{
               _jirafa();
               void draw(_modo modo, float r, float g, float b, float grosor);
 
-              float giro_cuerpo;
-              float giro_cola;
-              float giro_cuello_1;
-              float giro_cuello_2;
+              float giro_cuerpo,giro_cola, giro_cuello_1, giro_cuello_2, giro_cabeza;
 
               float giro_cola_max;
               float giro_cola_min;
