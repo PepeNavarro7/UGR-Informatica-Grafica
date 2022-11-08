@@ -70,7 +70,8 @@ void _pata::draw(_modo modo, float r, float g, float b, float grosor){
 }
 
 _cabeza::_cabeza(){ 
-  ply.parametros("txt/jirafa");
+  char* path = "txt/jirafa";
+  ply.parametros(path);
   largo=ALTURA*0.08;
 }
 void _cabeza::draw(_modo modo, float r, float g, float b, float grosor){

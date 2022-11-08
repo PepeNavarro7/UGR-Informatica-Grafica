@@ -13,7 +13,8 @@
 
 const float ALTURA=1.0, ARTIC=0.065;
 
-//Parte mis clases
+//Mis clases
+// Cuerpo de la jirafa, el eje central
 class _cuerpo: public _triangulos3D{
        public:
               _cuerpo();
@@ -27,6 +28,7 @@ class _cuerpo: public _triangulos3D{
               _cubo cubo;
 };
 
+// Cola de la jirafa, se moverá arriba y abajo
 class _cola: public _triangulos3D{
        public:
               _cola();
@@ -38,6 +40,7 @@ class _cola: public _triangulos3D{
               _cilindro cilindro;
 };
 
+// El cuello tendrá dos instancias distintas, para permitir más mobilidad
 class _cuello: public _triangulos3D{
        public:
               _cuello();
@@ -49,6 +52,8 @@ class _cuello: public _triangulos3D{
               _cilindro cilindro;
 
 };
+
+// Pequeña articulación esférica para que no quede muy feo el cruce entre objetos
 class _articulacion: public _triangulos3D{
        public: 
               _articulacion();
@@ -58,6 +63,7 @@ class _articulacion: public _triangulos3D{
               _esfera esfera;
 };
 
+// Las 4 patas
 class _pata: public _triangulos3D{
        public:
               _pata();
@@ -68,6 +74,7 @@ class _pata: public _triangulos3D{
               _cilindro cilindro;
 };
 
+// La cabeza viene detallada en el archivo PLY
 class _cabeza: public _triangulos3D{
        public:
               _cabeza();
@@ -77,6 +84,7 @@ class _cabeza: public _triangulos3D{
              _objeto_ply ply;
 };
 
+// La clase que aglutina las demás
 class _jirafa: public _triangulos3D{
        public:
               _jirafa();
@@ -87,12 +95,12 @@ class _jirafa: public _triangulos3D{
               float giro_cola_max, giro_cola_min, giro_cuello_1_max, giro_cuello_1_min,
               giro_cuello_2_max, giro_cuello_2_min, giro_cabeza_max, giro_cabeza_min;
        protected:
-       _cuerpo cuerpo;
-       _cola cola;
-       _cuello cuello; // cuello son 2 partes
-       _articulacion articulacion;
-       _pata pata;
-       _cabeza cabeza;
+              _cuerpo cuerpo;
+              _cola cola;
+              _cuello cuello; // cuello son 2 partes
+              _articulacion articulacion; // pequeña esfera
+              _pata pata;
+              _cabeza cabeza;
 };
 
 #endif
