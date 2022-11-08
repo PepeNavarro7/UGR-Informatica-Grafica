@@ -1,9 +1,12 @@
-Ejecutar con "make do"
+Ejecutar con "make do", "make" solo compila el ejecutable pero no lo llama.
+"make clean" para borrar archivos innecesarios
+
 4 modos de dibujado:
 1 -> modo vertices
 2 -> modo aristas
 3 -> modo color sólido 
 4 -> modo sólido de colores aleatorios
+5 -> modo completo
 		
 8 cuerpos geométricos:
 C -> Cubo 
@@ -25,4 +28,4 @@ F1-F2 -> Girar cuerpo jirafa
 F3-F4 -> Girar cola
 F5-F6 -> Girar cuello entero
 F7-F8 -> Girar solo parte de arriba del cuello
-
+F9-F10 -> Girar cabeza

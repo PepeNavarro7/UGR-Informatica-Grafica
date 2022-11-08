@@ -17,8 +17,12 @@ DEPS := $(wildcard $(INC_DIR)/*.*) # Includes
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ)
-	$(CC) -o $@ $^ $(LDFLAGS) $(LIBS) 
+$(TARGET): directorios $(OBJ)
+	$(CC) -o $@ $(OBJ) $(LDFLAGS) $(LIBS) 
+
+directorios:
+	@mkdir -p obj
+	@mkdir -p bin
 
 $(OBJ_DIR)/jirafa.o: $(SRC_DIR)/jirafa.cc $(DEPS)
 	$(CC) $(CPPFLAGS) -c $< -o $@
