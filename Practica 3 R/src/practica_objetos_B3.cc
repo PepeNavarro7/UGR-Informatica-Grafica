@@ -130,10 +130,8 @@ void animacion(){
 //
 //***************************************************************************
 
-void clean_window()
-{
-
-glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+void clean_window(){
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
 
@@ -143,55 +141,49 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 // Funcion para definir la transformación de proyeccion
 //***************************************************************************
 
-void change_projection()
-{
+void change_projection(){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-
-// formato(x_minimo,x_maximo, y_minimo, y_maximo,plano_delantero, plano_traser)
-//  plano_delantero>0  plano_trasero>PlanoDelantero)
-glFrustum(-Size_x,Size_x,-Size_y,Size_y,Front_plane,Back_plane);
+    // formato(x_minimo,x_maximo, y_minimo, y_maximo,plano_delantero, plano_traser)
+    //  plano_delantero>0  plano_trasero>PlanoDelantero)
+    glFrustum(-Size_x,Size_x,-Size_y,Size_y,Front_plane,Back_plane);
 }
 
 //**************************************************************************
 // Funcion para definir la transformación*ply1 de vista (posicionar la camara)
 //***************************************************************************
 
-void change_observer()
-{
-
-// posicion del observador
-glMatrixMode(GL_MODELVIEW);
-glLoadIdentity();
-glTranslatef(0,-ALTURA,-Observer_distance);
-glRotatef(Observer_angle_x,1,0,0);
-glRotatef(Observer_angle_y,0,1,0);
+void change_observer(){
+    // posicion del observador
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslatef(0,-ALTURA,-Observer_distance);
+    glRotatef(Observer_angle_x,1,0,0);
+    glRotatef(Observer_angle_y,0,1,0);
 }
 
 //**************************************************************************
 // Funcion que dibuja los ejes utilizando la primitiva grafica de lineas
 //***************************************************************************
 
-void draw_axis()
-{
-	
-glDisable(GL_LIGHTING);
-glLineWidth(2);
-glBegin(GL_LINES);
-// eje X, color rojo
-glColor3f(1,0,0);
-glVertex3f(-AXIS_SIZE,0,0);
-glVertex3f(AXIS_SIZE,0,0);
-// eje Y, color verde
-glColor3f(0,1,0);
-glVertex3f(0,-AXIS_SIZE,0);
-glVertex3f(0,AXIS_SIZE,0);
-// eje Z, color azul
-glColor3f(0,0,1);
-glVertex3f(0,0,-AXIS_SIZE);
-glVertex3f(0,0,AXIS_SIZE);
-glEnd();
+void draw_axis(){
+    glDisable(GL_LIGHTING);
+    glLineWidth(2);
+    glBegin(GL_LINES);
+    // eje X, color rojo
+    glColor3f(1,0,0);
+    glVertex3f(-AXIS_SIZE,0,0);
+    glVertex3f(AXIS_SIZE,0,0);
+    // eje Y, color verde
+    glColor3f(0,1,0);
+    glVertex3f(0,-AXIS_SIZE,0);
+    glVertex3f(0,AXIS_SIZE,0);
+    // eje Z, color azul
+    glColor3f(0,0,1);
+    glVertex3f(0,0,-AXIS_SIZE);
+    glVertex3f(0,0,AXIS_SIZE);
+    glEnd();
 }
 
 
@@ -199,12 +191,10 @@ glEnd();
 // Funcion que dibuja los objetos
 //****************************2***********************************************
 
-void draw_objects()
-{
-
-switch (t_objeto){
-	case CUBO: cubo.draw(modo,1.0,0.0,0.0,5);break;
-	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,5);break;
+void draw_objects(){
+    switch (t_objeto){
+        case CUBO: cubo.draw(modo,1.0,0.0,0.0,5);break;
+        case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,5);break;
         case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,5);break;
         case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,5);break;
         case CILINDRO: cilindro.draw(modo,1.0,0.0,0.0,5);break;
@@ -212,9 +202,9 @@ switch (t_objeto){
         case ESFERA: esfera.draw(modo,1.0,0.0,0.0,5);break;
         case EXCAVADORA: excavadora.draw(modo,1.0,0.0,0.0,5);break;
         case EXTRUSION: extrusion->draw(modo,1.0,0.0,0.0,5);break;
-    case JIRAFA: jirafa.draw(modo,0.0,0.0,0.0,5); break;
-	}
 
+        case JIRAFA: jirafa.draw(modo,0.0,0.0,0.0,5); break;
+    }
 }
 
 
@@ -222,13 +212,12 @@ switch (t_objeto){
 //
 //***************************************************************************
 
-void draw(void)
-{
-clean_window();
-change_observer();
-draw_axis();
-draw_objects();
-glutSwapBuffers();
+void draw(void){
+    clean_window();
+    change_observer();
+    draw_axis();
+    draw_objects();
+    glutSwapBuffers();
 }
 
 
@@ -241,15 +230,14 @@ glutSwapBuffers();
 // nuevo alto
 //***************************************************************************
 
-void change_window_size(int Ancho1,int Alto1)
-{
-float Aspect_ratio;
+void change_window_size(int Ancho1,int Alto1){
+    float Aspect_ratio;
 
-Aspect_ratio=(float) Alto1/(float )Ancho1;
-Size_y=Size_x*Aspect_ratio;
-change_projection();
-glViewport(0,0,Ancho1,Alto1);
-glutPostRedisplay();
+    Aspect_ratio=(float) Alto1/(float )Ancho1;
+    Size_y=Size_x*Aspect_ratio;
+    change_projection();
+    glViewport(0,0,Ancho1,Alto1);
+    glutPostRedisplay();
 }
 
 
@@ -269,6 +257,7 @@ void normal_key(unsigned char Tecla1,int x,int y){
         case '2':modo=EDGES;break;
         case '3':modo=SOLID;break;
         case '4':modo=SOLID_COLORS;break;
+        case '5':modo=COMPLETO; break;
 
         case 'C': t_objeto = CUBO; break;
         case 'E': t_objeto = ESFERA; break;
@@ -388,27 +377,26 @@ void special_key(int Tecla1,int x,int y){
 // Funcion de incializacion
 //***************************************************************************
 
-void initialize(void)
-{
-// se inicalizan la ventana y los planos de corte
-Size_x=0.5;
-Size_y=0.5;
-Front_plane=1;
-Back_plane=1000;
+void initialize(void){
+    // se inicalizan la ventana y los planos de corte
+    Size_x=0.5;
+    Size_y=0.5;
+    Front_plane=1;
+    Back_plane=1000;
 
-// se incia la posicion del observador, en el eje z
-Observer_distance=4*Front_plane;
-Observer_angle_x=0;
-Observer_angle_y=0;
+    // se incia la posicion del observador, en el eje z
+    Observer_distance=4*Front_plane;
+    Observer_angle_x=0;
+    Observer_angle_y=0;
 
-// se indica el color para limpiar la ventana	(r,v,a,al)
-// blanco=(1,1,1,1) rojo=(1,0,0,1), ...
-glClearColor(1,1,1,1);
+    // se indica el color para limpiar la ventana	(r,v,a,al)
+    // blanco=(1,1,1,1) rojo=(1,0,0,1), ...
+    glClearColor(1,1,1,1);
 
-// se habilita el z-bufer
-glEnable(GL_DEPTH_TEST);
-change_projection();
-glViewport(0,0,Window_width,Window_high);
+    // se habilita el z-bufer
+    glEnable(GL_DEPTH_TEST);
+    change_projection();
+    glViewport(0,0,Window_width,Window_high);
 }
 
 
@@ -420,84 +408,82 @@ glViewport(0,0,Window_width,Window_high);
 //***************************************************************************
 
 
-int main(int argc, char *argv[] )
-{
+int main(int argc, char *argv[] ){
  
-// perfil 
+    // perfil 
+    vector<_vertex3f> perfil, poligono;
+    _vertex3f aux;
 
-vector<_vertex3f> perfil, poligono;
-_vertex3f aux;
-
-aux.x=1.0; aux.y=-1.0; aux.z=0.0;
-perfil.push_back(aux);
-aux.x=1.5; aux.y=0.0; aux.z=0.0;
-perfil.push_back(aux);
-aux.x=1.0; aux.y=1.0; aux.z=0.0;
-perfil.push_back(aux);
-aux.x=1.5; aux.y=1.2; aux.z=0.0;
-perfil.push_back(aux);
+    aux.x=1.0; aux.y=-1.0; aux.z=0.0;
+    perfil.push_back(aux);
+    aux.x=1.5; aux.y=0.0; aux.z=0.0;
+    perfil.push_back(aux);
+    aux.x=1.0; aux.y=1.0; aux.z=0.0;
+    perfil.push_back(aux);
+    aux.x=1.5; aux.y=1.2; aux.z=0.0;
+    perfil.push_back(aux);
 
 
-rotacion.parametros(perfil,6,0,1,1);
+    rotacion.parametros(perfil,6,0,1,1);
 
-aux.x=1.0; aux.y=0.0; aux.z=1.0;
-poligono.push_back(aux);
-aux.x=1.0; aux.y=0.0; aux.z=-1.0;
-poligono.push_back(aux);
-aux.x=-1.2; aux.y=0.0; aux.z=-1.0;
-poligono.push_back(aux);
-aux.x=-0.8; aux.y=0.0; aux.z=0.0;
-poligono.push_back(aux);
-aux.x=-1.2; aux.y=0.0; aux.z=1.0;
-poligono.push_back(aux);
+    aux.x=1.0; aux.y=0.0; aux.z=1.0;
+    poligono.push_back(aux);
+    aux.x=1.0; aux.y=0.0; aux.z=-1.0;
+    poligono.push_back(aux);
+    aux.x=-1.2; aux.y=0.0; aux.z=-1.0;
+    poligono.push_back(aux);
+    aux.x=-0.8; aux.y=0.0; aux.z=0.0;
+    poligono.push_back(aux);
+    aux.x=-1.2; aux.y=0.0; aux.z=1.0;
+    poligono.push_back(aux);
 
-extrusion= new _extrusion(poligono, 0.25, 1.0, 0.25);
+    extrusion= new _extrusion(poligono, 0.25, 1.0, 0.25);
 
-// se llama a la inicialización de glut
-glutInit(&argc, argv);
+    // se llama a la inicialización de glut
+    glutInit(&argc, argv);
 
-// se indica las caracteristicas que se desean para la visualización con OpenGL
-// Las posibilidades son:
-// GLUT_SIMPLE -> memoria de imagen simple
-// GLUT_DOUBLE -> memoria de imagen doble
-// GLUT_INDEX -> memoria de imagen con color indizado
-// GLUT_RGB -> memoria de imagen con componentes rojo, verde y azul para cada pixel
-// GLUT_RGBA -> memoria de imagen con componentes rojo, verde, azul y alfa para cada pixel
-// GLUT_DEPTH -> memoria de profundidad o z-bufer
-// GLUT_STENCIL -> memoria de estarcido_rotation Rotation;
-glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+    // se indica las caracteristicas que se desean para la visualización con OpenGL
+    // Las posibilidades son:
+    // GLUT_SIMPLE -> memoria de imagen simple
+    // GLUT_DOUBLE -> memoria de imagen doble
+    // GLUT_INDEX -> memoria de imagen con color indizado
+    // GLUT_RGB -> memoria de imagen con componentes rojo, verde y azul para cada pixel
+    // GLUT_RGBA -> memoria de imagen con componentes rojo, verde, azul y alfa para cada pixel
+    // GLUT_DEPTH -> memoria de profundidad o z-bufer
+    // GLUT_STENCIL -> memoria de estarcido_rotation Rotation;
+    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
-// posicion de la esquina inferior izquierdad de la ventana
-glutInitWindowPosition(Window_x,Window_y);
+    // posicion de la esquina inferior izquierdad de la ventana
+    glutInitWindowPosition(Window_x,Window_y);
 
-// tamaño de la ventana (ancho y alto)
-glutInitWindowSize(Window_width,Window_high);
+    // tamaño de la ventana (ancho y alto)
+    glutInitWindowSize(Window_width,Window_high);
 
-// llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
-// al bucle de eventos)
-glutCreateWindow("PRACTICA - 3");
+    // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
+    // al bucle de eventos)
+    glutCreateWindow("PRACTICA - 3");
 
-// asignación de la funcion llamada "dibujar" al evento de dibujo
-glutDisplayFunc(draw);
-// asignación de la funcion llamada "change_window_size" al evento correspondiente
-glutReshapeFunc(change_window_size);
-// asignación de la funcion llamada "normal_key" al evento correspondiente
-glutKeyboardFunc(normal_key);
-// asignación de la funcion llamada "tecla_Especial" al evento correspondiente
-glutSpecialFunc(special_key);
+    // asignación de la funcion llamada "dibujar" al evento de dibujo
+    glutDisplayFunc(draw);
+    // asignación de la funcion llamada "change_window_size" al evento correspondiente
+    glutReshapeFunc(change_window_size);
+    // asignación de la funcion llamada "normal_key" al evento correspondiente
+    glutKeyboardFunc(normal_key);
+    // asignación de la funcion llamada "tecla_Especial" al evento correspondiente
+    glutSpecialFunc(special_key);
 
-// Siempre que la apliacion este en idle, se llamará a la función animacion()
-glutIdleFunc(animacion);
+    // Siempre que la apliacion este en idle, se llamará a la función animacion()
+    glutIdleFunc(animacion);
 
-// funcion de inicialización
-initialize();
+    // funcion de inicialización
+    initialize();
 
-// creación del objeto ply
-ply.parametros(argv[1]);
+    // creación del objeto ply
+    ply.parametros(argv[1]);
 
-//ply = new _objeto_ply(argv[1]);
+    //ply = new _objeto_ply(argv[1]);
 
-// inicio del bucle de eventos
-glutMainLoop();
-return 0;
+    // inicio del bucle de eventos
+    glutMainLoop();
+    return 0;
 }

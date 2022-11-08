@@ -12,7 +12,7 @@
 
 
 const float AXIS_SIZE=5000;
-typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS} _modo;
+typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS,COMPLETO} _modo;
 
 //*************************************************************************
 // clase punto
