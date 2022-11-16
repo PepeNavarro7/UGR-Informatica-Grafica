@@ -12,7 +12,8 @@
 
 
 const float AXIS_SIZE=5000;
-typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS,COMPLETO} _modo;
+typedef enum{POINTS,EDGES,SOLID,SOLID_COLORS,
+COMPLETO, SOLID_FLAT, SOLID_SMOOTH} _modo;
 
 //*************************************************************************
 // clase punto
@@ -34,25 +35,41 @@ vector<_vertex3f> colores_vertices;
 // clase triángulo
 //*************************************************************************
 
-class _triangulos3D: public _puntos3D
-{
+class _triangulos3D: public _puntos3D{
 public:
+       _triangulos3D();
+       void 	draw_aristas(float r, float g, float b, int grosor);
+       void   draw_solido(float r, float g, float b);
+       void 	draw_solido_colores();
+       void   draw_solido_plano();
+ //      void   draw_solido_suave();
+       void 	draw(_modo modo, float r, float g, float b, float grosor);
 
-	_triangulos3D();
-void 	draw_aristas(float r, float g, float b, int grosor);
-void    draw_solido(float r, float g, float b);
-void 	draw_solido_colores();
-void 	draw(_modo modo, float r, float g, float b, float grosor);
+       /* asignación de colores */
+       void 	colors_random();
+       void 	colors_chess(float r1, float g1, float b1, float r2, float g2, float b2);
+       void   colors_flat(float r, float g, float b, float p_lx, float p_ly, float p_lz);
+//       void   colors_smooth(float r, float g, float b, float p_lx, float p_ly, float p_lz);
 
-/* asignación de colores */
-void 	colors_random();
-void 	colors_chess(float r1, float g1, float b1, float r2, float g2, float b2);
+       /* Calcular normales*/
 
+       void   calcular_normales_caras();
+//       void   calcular_normales_vertices();
 
-vector<_vertex3i> caras;
-vector<_vertex3f> colores_caras;
+       vector<_vertex3i> caras;
+       vector<_vertex3f> colores_caras;
+
+       vector<_vertex3f> normales_caras;
+       vector<_vertex3i> normales_vertices;
+
+       // material
+       _vertex4f ambiente_difuso; // coeficientes ambinete y difuso
+       _vertex4f especular; // coeficiente especular
+       float brillo; // exponente del brillo
 };
+/* Calcular normales*/
 
+void   calcular_normales_caras();
 //*************************************************************************
 // objetos o modelos
 //*************************************************************************

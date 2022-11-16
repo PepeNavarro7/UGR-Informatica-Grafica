@@ -29,7 +29,11 @@ void _puntos3D::draw_puntos(float r, float g, float b, int grosor){
 //*************************************************************************
 // _triangulos3D
 //*************************************************************************
-_triangulos3D::_triangulos3D(){}
+_triangulos3D::_triangulos3D(){
+  ambiente_difuso=_vertex4f(0.9,0.5,0.1,1.0);
+  especular=_vertex4f(0.5,0.5,0.5,1.0);
+  brillo=110.0;
+}
 
 
 //*************************************************************************
@@ -75,6 +79,53 @@ void _triangulos3D::draw_solido_colores(){
   glEnd();
 }
 
+// Dibujar en modo iluminacion para las caras
+void _triangulos3D::draw_solido_plano(){
+  glEnable(GL_LIGHTING);
+  glShadeModel(GL_FLAT);
+
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difuso);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,(GLfloat *) &especular);
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,brillo);
+
+  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+  glBegin(GL_TRIANGLES);
+  for (long unsigned int i=0;i<caras.size();i++){
+    glNormal3f(normales_caras[i].x,normales_caras[i].y,normales_caras[i].z);
+    glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
+    glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+    glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+    }
+  glEnd();
+  glDisable(GL_LIGHTING);
+}
+
+void _triangulos3D::calcular_normales_caras(){
+  int i, n_c;
+  
+  _vertex3f va, vb;
+  float modulo;
+
+  n_c=caras.size();
+  normales_caras.resize(n_c);
+
+
+
+  for(i=0;i<n_c;++i){
+    va=vertices[caras[i]._1]-vertices[caras[i]._0];
+    vb=vertices[caras[i]._2]-vertices[caras[i]._0];
+    normales_caras[i].x=va.y*vb.z-va.z*vb.y;
+    normales_caras[i].y=va.z*vb.x-va.x*vb.z;
+    normales_caras[i].z=va.x*vb.y-va.y*vb.x;
+    modulo=sqrt(normales_caras[i].x * normales_caras[i].x +
+               normales_caras[i].y * normales_caras[i].y +
+               normales_caras[i].z * normales_caras[i].z);
+    normales_caras[i].x/=modulo;
+    normales_caras[i].y/=modulo;
+    normales_caras[i].z/=modulo;
+  }
+}
+
 
 //*************************************************************************
 // dibujar con distintos modos
@@ -91,6 +142,7 @@ void _triangulos3D::draw(_modo modo, float r, float g, float b, float grosor){
       draw_aristas(0, 0, 0, grosor);
       draw_solido_colores();
       break;
+    case SOLID_FLAT: draw_solido_plano(); break;
 	}
 }
 
@@ -116,18 +168,45 @@ void _triangulos3D::colors_chess(float r1, float g1, float b1, float r2, float g
   int i, n_c;
   n_c=caras.size();
   colores_caras.resize(n_c);
-  for (i=0;i<n_c;i++)  
-    {if (i%2==0) 
-      {colores_caras[i].r=r1;
-        colores_caras[i].g=g1;
-        colores_caras[i].b=b1;
-      }
-    else 
-      {colores_caras[i].r=r2;
-        colores_caras[i].g=g2;
-        colores_caras[i].b=b2;
+  for (i=0;i<n_c;i++) {
+    if (i%2==0){
+      colores_caras[i].r=r1;
+      colores_caras[i].g=g1;
+      colores_caras[i].b=b1;
+    }else{
+      colores_caras[i].r=r2;
+      colores_caras[i].g=g2;
+      colores_caras[i].b=b2;
       } 
     }
+}
+
+// solo cogemos las 2/3 primeras partes de la ecuacion
+void _triangulos3D::colors_flat(float r, float g, float b, float p_lx, float p_ly, float p_lz){
+  int i, n_c;
+  _vertex3f l;
+  float modulo, escalar;
+  n_c=caras.size();
+  colores_caras.resize(n_c);
+
+  for(int i=0; i<n_c;++i){
+    colores_caras[i].r=0.1*r;
+    colores_caras[i].g=0.1*g;
+    colores_caras[i].b=0.11*b; // las sombras son un pelin mas azuladas
+    l.x = p_lx - vertices[caras[i]._0].x;
+    l.y = p_ly - vertices[caras[i]._0].y;
+    l.z = p_lz - vertices[caras[i]._0].z;
+    modulo=sqrt(l.x*l.x + l.y*l.y + l.z*l.z);
+    l.x/=modulo;
+    l.y/=modulo;
+    l.z/=modulo;
+    escalar = normales_caras[i].x*l.x + normales_caras[i].y*l.y + normales_caras[i].z*l.z;
+    if(escalar > 0.0){
+      colores_caras[i].r+=r*escalar;
+      colores_caras[i].g+=g*escalar;
+      colores_caras[i].b+=b*escalar;
+    }
+  }
 }
 
 
@@ -165,6 +244,9 @@ _cubo::_cubo(float tam){
   caras[10]._0=0;caras[10]._1=1;caras[10]._2=4;
   caras[11]._0=1;caras[11]._1=5;caras[11]._2=4; 
 
+
+  // normales
+  calcular_normales_caras();
   //colores de las caras
   colors_random();
 }
@@ -190,6 +272,9 @@ _piramide::_piramide(float tam, float al){
   caras[3]._0=3;caras[3]._1=0;caras[3]._2=4;
   caras[4]._0=3;caras[4]._1=1;caras[4]._2=0;
   caras[5]._0=3;caras[5]._1=2;caras[5]._2=1;
+
+  // normales
+  calcular_normales_caras();
 
   //colores de las caras
   colors_random();
@@ -231,8 +316,14 @@ void _objeto_ply::parametros(char *archivo){
     caras[i].z=car_ply[3*i+2];
   }
 
-  colores_caras.resize(n_car);
+  // normales
+  calcular_normales_caras();
+
+  colors_flat(0.9, 0.7, 0.0, 0.0, 10.0, -20.0);
+
+  /*colores_caras.resize(n_car);
   srand(10);
+  
   // colores
   float sum;
   int n;
@@ -252,7 +343,7 @@ void _objeto_ply::parametros(char *archivo){
       if (n>5) colores_caras[i].g=0.816+sum; 
       else colores_caras[i].g=0.816-sum; 
     }
-  }
+  }*/
 }
 
 
@@ -337,6 +428,9 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tipo, int tapa
     caras[c]._2=num_aux-1+j*num_aux;
     c+=1;
   }
+
+  // normales
+  calcular_normales_caras();
 
   //colores de las caras
   colors_random();
@@ -442,7 +536,10 @@ _extrusion::_extrusion(vector<_vertex3f> poligono, float x, float y, float z){
     caras[c]._2=i*2+1;    
     c=c+1;    
     }  
-    
+  
+  // normales
+  calcular_normales_caras();
+
   //colores de las caras
   colors_random();
 }

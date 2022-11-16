@@ -211,10 +211,26 @@ void draw_objects(){
 //**************************************************************************
 //
 //***************************************************************************
+void luces(){
+    
+    GLfloat luz_ambiente[] = {0.1,0.1,0.1,1.0},
+    luz_difusa[] = {1.0,1.0,1.0,1.0},
+    luz_posicion[] = {0.0,10.0,20.0,1.0};
+
+    glLightfv(GL_LIGHT1,GL_AMBIENT,luz_ambiente);
+    glLightfv(GL_LIGHT1,GL_DIFFUSE,luz_difusa);
+    glLightfv(GL_LIGHT1,GL_SPECULAR,luz_difusa);
+    glLightfv(GL_LIGHT1,GL_POSITION,luz_posicion);
+
+    glDisable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+}
+
 
 void draw(void){
     clean_window();
     change_observer();
+    luces();
     draw_axis();
     draw_objects();
     glutSwapBuffers();
@@ -258,6 +274,7 @@ void normal_key(unsigned char Tecla1,int x,int y){
         case '3':modo=SOLID;break;
         case '4':modo=SOLID_COLORS;break;
         case '5':modo=COMPLETO; break;
+        case '6':modo=SOLID_FLAT; break;
 
         case 'C': t_objeto = CUBO; break;
         case 'E': t_objeto = ESFERA; break;

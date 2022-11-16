@@ -23,6 +23,7 @@ A -> Excavadora
 M -> Jirafa
 
 S -> Activar/Desactivar animacion
+Q -> Cerrar
 
 F1-F2 -> Girar cuerpo jirafa
 F3-F4 -> Girar cola
