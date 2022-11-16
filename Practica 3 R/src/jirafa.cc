@@ -107,7 +107,7 @@ void _jirafa::draw(_modo modo, float r, float g, float b, float grosor){
     // Desplazo y giro el cuerpo (en este da igual el orden)
     glRotatef(this->giro_cuerpo,0,1,0);
     glTranslatef(0,ALTURA+cuerpo.alto/2,0);
-    this->cuerpo.draw(modo,r,g,b,grosor);
+    this->cuerpo.draw(modo,0,1,0,grosor);
 
     // Pierna delante izquierda
     // No se pone en la esquina, se deja un pequeño offset (/2.4 en vez de /2)
