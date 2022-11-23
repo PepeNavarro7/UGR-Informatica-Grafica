@@ -7,6 +7,7 @@ Ejecutar con "make do", "make" solo compila el ejecutable pero no lo llama.
 3 -> modo color sólido 
 4 -> modo sólido de colores aleatorios
 5 -> modo completo
+6 -> SOLID_FLAT
 		
 8 cuerpos geométricos:
 C -> Cubo 
@@ -20,7 +21,7 @@ X -> Extrusion de un polígono
 
 2 modelos jerárquicos articulados:
 A -> Excavadora
-M -> Jirafa
+J -> Jirafa
 
 S -> Activar/Desactivar animacion
 Q -> Cerrar

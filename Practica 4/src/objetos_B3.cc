@@ -99,9 +99,38 @@ void _triangulos3D::draw_solido_plano(){
   glEnd();
   glDisable(GL_LIGHTING);
 }
+// Dibujar en modo iluminacion para los vertices
+void _triangulos3D::draw_solido_suave(){
+  glEnable(GL_LIGHTING);
+  glShadeModel(GL_SMOOTH);
+
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difuso);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,(GLfloat *) &especular);
+  glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,brillo);
+
+  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+  glBegin(GL_TRIANGLES);
+  
+  for (long unsigned int i=0;i<caras.size();i++){
+    glNormal3f(normales_vertices[caras[i]._0].x,
+               normales_vertices[caras[i]._0].y,
+               normales_vertices[caras[i]._0].z);
+    glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
+    glNormal3f(normales_vertices[caras[i]._1].x,
+               normales_vertices[caras[i]._1].y,
+               normales_vertices[caras[i]._1].z);
+    glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+    glNormal3f(normales_vertices[caras[i]._2].x,
+               normales_vertices[caras[i]._2].y,
+               normales_vertices[caras[i]._2].z);
+    glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+    }
+  glEnd();
+  glDisable(GL_LIGHTING);
+}
 
 void _triangulos3D::calcular_normales_caras(){
-  int i, n_c;
+  int n_c;
   
   _vertex3f va, vb;
   float modulo;
@@ -109,9 +138,7 @@ void _triangulos3D::calcular_normales_caras(){
   n_c=caras.size();
   normales_caras.resize(n_c);
 
-
-
-  for(i=0;i<n_c;++i){
+  for(int i=0;i<n_c;++i){
     va=vertices[caras[i]._1]-vertices[caras[i]._0];
     vb=vertices[caras[i]._2]-vertices[caras[i]._0];
     normales_caras[i].x=va.y*vb.z-va.z*vb.y;
@@ -124,6 +151,30 @@ void _triangulos3D::calcular_normales_caras(){
     normales_caras[i].y/=modulo;
     normales_caras[i].z/=modulo;
   }
+}
+void _triangulos3D::calcular_normales_vertices(){
+  int i, n_v, n_c;
+  float modulo;
+  n_v=vertices.size();
+  normales_vertices.resize(n_v);
+  for(int i=0;i<n_c;++i){
+    normales_vertices[i]=_vertex3f(0.0,0.0,0.0);
+  }
+  n_c=caras.size();
+  for(int i=0; i<n_c; ++i){
+    normales_vertices[caras[i]._0]+=normales_caras[i];
+    normales_vertices[caras[i]._1]+=normales_caras[i];
+    normales_vertices[caras[i]._2]+=normales_caras[i];
+  }
+  for(int i=0;i<n_v;++i){
+      modulo=sqrt(normales_vertices[i].x*normales_vertices[i].x+
+                  normales_vertices[i].y*normales_vertices[i].y+
+                  normales_vertices[i].z*normales_vertices[i].z);
+      normales_vertices[i].x/=modulo;
+      normales_vertices[i].y/=modulo;
+      normales_vertices[i].z/=modulo;
+    }
+
 }
 
 
@@ -143,6 +194,7 @@ void _triangulos3D::draw(_modo modo, float r, float g, float b, float grosor){
       draw_solido_colores();
       break;
     case SOLID_FLAT: draw_solido_plano(); break;
+    case SOLID_SMOOTH: draw_solido_suave(); break;
 	}
 }
 
@@ -247,6 +299,7 @@ _cubo::_cubo(float tam){
 
   // normales
   calcular_normales_caras();
+  calcular_normales_vertices();
   //colores de las caras
   colors_random();
 }
@@ -275,7 +328,7 @@ _piramide::_piramide(float tam, float al){
 
   // normales
   calcular_normales_caras();
-
+calcular_normales_vertices();
   //colores de las caras
   colors_random();
 }
@@ -318,6 +371,7 @@ void _objeto_ply::parametros(char *archivo){
 
   // normales
   calcular_normales_caras();
+  calcular_normales_vertices();
 
   colors_flat(0.9, 0.7, 0.0, 0.0, 10.0, -20.0);
 
@@ -431,6 +485,21 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tipo, int tapa
 
   // normales
   calcular_normales_caras();
+  if (tipo==2){ // esfera
+    float modulo;
+
+    int n_v=vertices.size();
+    normales_vertices.resize(n_v);
+    for(int i=0;i<n_v;++i){
+      modulo=sqrt(vertices[i].x*vertices[i].x+vertices[i].y*vertices[i].y+vertices[i].z*vertices[i].z);
+      normales_vertices[i].x=vertices[i].x/modulo;
+      normales_vertices[i].y=vertices[i].y/modulo;
+      normales_vertices[i].z=vertices[i].z/modulo;
+    }
+
+  } else{
+    calcular_normales_vertices();
+  }
 
   //colores de las caras
   colors_random();
@@ -539,6 +608,7 @@ _extrusion::_extrusion(vector<_vertex3f> poligono, float x, float y, float z){
   
   // normales
   calcular_normales_caras();
+  calcular_normales_vertices();
 
   //colores de las caras
   colors_random();

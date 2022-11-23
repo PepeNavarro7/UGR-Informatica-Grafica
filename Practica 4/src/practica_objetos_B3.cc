@@ -44,6 +44,10 @@ _jirafa jirafa;
 
 // _objeto_ply *ply;
 
+float giro_luz=0.0;
+
+
+
 
 // Animacion
 // A traves de flags, definimos los giros maximos y la vuelta de los giros
@@ -211,7 +215,7 @@ void draw_objects(){
 //**************************************************************************
 //
 //***************************************************************************
-void luces(){
+void luces(float alfa){
     
     GLfloat luz_ambiente[] = {0.1,0.1,0.1,1.0},
     luz_difusa[] = {1.0,1.0,1.0,1.0},
@@ -220,6 +224,9 @@ void luces(){
     glLightfv(GL_LIGHT1,GL_AMBIENT,luz_ambiente);
     glLightfv(GL_LIGHT1,GL_DIFFUSE,luz_difusa);
     glLightfv(GL_LIGHT1,GL_SPECULAR,luz_difusa);
+    glPushMatrix();
+        glRotatef(alfa,0,1,0);
+    glPopMatrix();
     glLightfv(GL_LIGHT1,GL_POSITION,luz_posicion);
 
     glDisable(GL_LIGHT0);
@@ -230,7 +237,7 @@ void luces(){
 void draw(void){
     clean_window();
     change_observer();
-    luces();
+    luces(giro_luz);
     draw_axis();
     draw_objects();
     glutSwapBuffers();
@@ -275,6 +282,7 @@ void normal_key(unsigned char Tecla1,int x,int y){
         case '4':modo=SOLID_COLORS;break;
         case '5':modo=COMPLETO; break;
         case '6':modo=SOLID_FLAT; break;
+        case '7':modo=SOLID_SMOOTH; break;
 
         case 'C': t_objeto = CUBO; break;
         case 'E': t_objeto = ESFERA; break;
@@ -287,7 +295,7 @@ void normal_key(unsigned char Tecla1,int x,int y){
         
         
         case 'A': t_objeto = EXCAVADORA; break;
-        case 'M': t_objeto = JIRAFA; break;
+        case 'J': t_objeto = JIRAFA; break;
 
         case 'S':
                 if(animado)
@@ -383,6 +391,12 @@ void special_key(int Tecla1,int x,int y){
             jirafa.giro_cabeza-=1;
             if (jirafa.giro_cabeza < jirafa.giro_cabeza_min)
                 jirafa.giro_cabeza = jirafa.giro_cabeza_min;
+        break;
+        case GLUT_KEY_F11:
+            giro_luz+=5;
+        break;
+        case GLUT_KEY_F12:
+            giro_luz-=5;
         break;
 	}
     glutPostRedisplay();

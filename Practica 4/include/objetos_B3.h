@@ -42,25 +42,26 @@ public:
        void   draw_solido(float r, float g, float b);
        void 	draw_solido_colores();
        void   draw_solido_plano();
- //      void   draw_solido_suave();
+       void   draw_solido_suave();
        void 	draw(_modo modo, float r, float g, float b, float grosor);
 
        /* asignación de colores */
        void 	colors_random();
        void 	colors_chess(float r1, float g1, float b1, float r2, float g2, float b2);
        void   colors_flat(float r, float g, float b, float p_lx, float p_ly, float p_lz);
+// Hacer para punto extra
 //       void   colors_smooth(float r, float g, float b, float p_lx, float p_ly, float p_lz);
 
        /* Calcular normales*/
 
        void   calcular_normales_caras();
-//       void   calcular_normales_vertices();
+       void   calcular_normales_vertices();
 
        vector<_vertex3i> caras;
        vector<_vertex3f> colores_caras;
 
        vector<_vertex3f> normales_caras;
-       vector<_vertex3i> normales_vertices;
+       vector<_vertex3f> normales_vertices;
 
        // material
        _vertex4f ambiente_difuso; // coeficientes ambinete y difuso
@@ -153,7 +154,7 @@ public:
 class _esfera: public _rotacion
 {
 public:
-       _esfera(float radio=1.0, int num1=12, int num2=12);
+       _esfera(float radio=1.0, int num1=24, int num2=24);
 };
 
 
