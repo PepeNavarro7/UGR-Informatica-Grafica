@@ -24,6 +24,12 @@ directorios:
 	@mkdir -p obj
 	@mkdir -p bin
 
+$(OBJ_DIR)/objetos_solidos.o: $(SRC_DIR)/objetos_solidos.cc $(DEPS)
+	$(CC) $(CPPFLAGS) -c $< -o $@
+$(OBJ_DIR)/objetos_revolucion.o: $(SRC_DIR)/objetos_revolucion.cc $(DEPS)
+	$(CC) $(CPPFLAGS) -c $< -o $@
+$(OBJ_DIR)/excavadora.o: $(SRC_DIR)/excavadora.cc $(DEPS)
+	$(CC) $(CPPFLAGS) -c $< -o $@
 $(OBJ_DIR)/jirafa.o: $(SRC_DIR)/jirafa.cc $(DEPS)
 	$(CC) $(CPPFLAGS) -c $< -o $@
 $(OBJ_DIR)/objetos_B3.o: $(SRC_DIR)/objetos_B3.cc $(DEPS)

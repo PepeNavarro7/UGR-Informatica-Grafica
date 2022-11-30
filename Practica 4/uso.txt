@@ -6,8 +6,9 @@ Ejecutar con "make do", "make" solo compila el ejecutable pero no lo llama.
 2 -> modo aristas
 3 -> modo color sólido 
 4 -> modo sólido de colores aleatorios
-5 -> modo completo
-6 -> SOLID_FLAT
+0 -> modo completo (vertices, aristas y colores aleatorios)
+5 -> SOLID_FLAT (normales caras)
+6 -> SOLID_SMOOTH (normales_vertices)
 		
 8 cuerpos geométricos:
 C -> Cubo 

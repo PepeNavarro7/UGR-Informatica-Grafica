@@ -8,6 +8,9 @@
 #include <vector>
 #include "../include/objetos_B3.h"
 #include "../include/jirafa.h"
+#include "../include/objetos_solidos.h"
+#include "../include/objetos_revolucion.h"
+#include "../include/excavadora.h"
 
 
 using namespace std;

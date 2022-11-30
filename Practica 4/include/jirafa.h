@@ -9,7 +9,8 @@
 #include <GL/gl.h>
 #include "../include/vertex.h"
 #include <stdlib.h>
-#include "objetos_B3.h"
+#include "objetos_solidos.h"
+#include "objetos_revolucion.h"
 
 const float ALTURA=1.0, ARTIC=0.065;
 
