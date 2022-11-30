@@ -9,6 +9,7 @@ Ejecutar con "make do", "make" solo compila el ejecutable pero no lo llama.
 0 -> modo completo (vertices, aristas y colores aleatorios)
 5 -> SOLID_FLAT (normales caras)
 6 -> SOLID_SMOOTH (normales_vertices)
+7 -> objeto sencillo con textura
 		
 8 cuerpos geométricos:
 C -> Cubo 
@@ -21,10 +22,11 @@ R -> Rotacion de un perfil
 X -> Extrusion de un polígono
 
 2 modelos jerárquicos articulados:
-A -> Excavadora
-J -> Jirafa
+A -> Jirafa
+H -> Excavadora
 
 S -> Activar/Desactivar animacion
+I -> Activar/Desactivar segunda luz
 Q -> Cerrar
 
 F1-F2 -> Girar cuerpo jirafa
@@ -32,3 +34,4 @@ F3-F4 -> Girar cola
 F5-F6 -> Girar cuello entero
 F7-F8 -> Girar solo parte de arriba del cuello
 F9-F10 -> Girar cabeza
+F11-F12 -> Girar segunda luz

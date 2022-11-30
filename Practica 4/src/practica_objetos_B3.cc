@@ -297,8 +297,8 @@ void normal_key(unsigned char Tecla1,int x,int y){
         case 'X': t_objeto = EXTRUSION; break;
         
         
-        case 'A': t_objeto = EXCAVADORA; break;
-        case 'J': t_objeto = JIRAFA; break;
+        case 'H': t_objeto = EXCAVADORA; break;
+        case 'A': t_objeto = JIRAFA; break;
 
         case 'S':
                 if(animado)

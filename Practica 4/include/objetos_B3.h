@@ -37,6 +37,16 @@ vector<_vertex3f> colores_vertices;
 
 class _triangulos3D: public _puntos3D{
 public:
+
+       vector<_vertex3i> caras; // Ternas de vertices que componen cada cara (_0,_1,_2)
+       vector<_vertex3f> colores_caras; // rgb del color de cada cara (r,g,b)
+       vector<_vertex3f> normales_caras; // xyz del vector normal a cada cara
+       vector<_vertex3f> normales_vertices; // xyz del vector normal a cada vertice
+
+       // material
+       _vertex4f ambiente_difuso; // coeficientes ambinete y difuso
+       _vertex4f especular; // coeficiente especular
+       float brillo; // exponente del brillo
        _triangulos3D();
        void 	draw_aristas(float r, float g, float b, int grosor);
        void   draw_solido(float r, float g, float b);
@@ -57,16 +67,7 @@ public:
        void   calcular_normales_caras();
        void   calcular_normales_vertices();
 
-       vector<_vertex3i> caras;
-       vector<_vertex3f> colores_caras;
-
-       vector<_vertex3f> normales_caras;
-       vector<_vertex3f> normales_vertices;
-
-       // material
-       _vertex4f ambiente_difuso; // coeficientes ambinete y difuso
-       _vertex4f especular; // coeficiente especular
-       float brillo; // exponente del brillo
+       
 };
 
 #endif

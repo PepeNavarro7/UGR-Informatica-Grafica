@@ -1,14 +1,7 @@
-//**************************************************************************
-// Práctica 2 
-//**************************************************************************
 #ifndef _JIRAFA
 #define _JIRAFA
 
 
-#include <vector>
-#include <GL/gl.h>
-#include "../include/vertex.h"
-#include <stdlib.h>
 #include "objetos_solidos.h"
 #include "objetos_revolucion.h"
 

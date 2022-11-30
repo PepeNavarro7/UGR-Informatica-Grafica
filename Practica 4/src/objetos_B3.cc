@@ -3,7 +3,6 @@
 //**************************************************************************
 
 #include "../include/objetos_B3.h"
-#include "../include/file_ply_stl.hpp"
 #include <time.h> 
 
 
@@ -83,6 +82,7 @@ void _triangulos3D::draw_solido_colores(){
 void _triangulos3D::draw_solido_plano(){
   glEnable(GL_LIGHTING);
   glShadeModel(GL_FLAT);
+  glEnable(GL_NORMALIZE); // esto no se si esta bien
 
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difuso);
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,(GLfloat *) &especular);
@@ -103,6 +103,7 @@ void _triangulos3D::draw_solido_plano(){
 void _triangulos3D::draw_solido_suave(){
   glEnable(GL_LIGHTING);
   glShadeModel(GL_SMOOTH);
+  glEnable(GL_NORMALIZE); // esto no se si esta bien
 
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difuso);
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,(GLfloat *) &especular);
@@ -153,7 +154,7 @@ void _triangulos3D::calcular_normales_caras(){
   }
 }
 void _triangulos3D::calcular_normales_vertices(){
-  int i, n_v, n_c;
+  int n_v, n_c;
   float modulo;
   n_v=vertices.size();
   normales_vertices.resize(n_v);
@@ -236,10 +237,9 @@ void _triangulos3D::colors_chess(float r1, float g1, float b1, float r2, float g
 
 // solo cogemos las 2/3 primeras partes de la ecuacion
 void _triangulos3D::colors_flat(float r, float g, float b, float p_lx, float p_ly, float p_lz){
-  int i, n_c;
+  int n_c=caras.size();
   _vertex3f l;
   float modulo, escalar;
-  n_c=caras.size();
   colores_caras.resize(n_c);
 
   for(int i=0; i<n_c;++i){
