@@ -16,7 +16,7 @@ using namespace std;
 typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, CILINDRO, CONO, ESFERA, EXTRUSION, 
                 EXCAVADORA, JIRAFA} _tipo_objeto;
 _tipo_objeto t_objeto=JIRAFA;
-_modo   modo=SOLID_COLORS;
+_modo   modo=COMPLETO;
 
 // variables que definen la posicion de la camara en coordenadas polares
 GLfloat Observer_distance;
@@ -280,9 +280,9 @@ void normal_key(unsigned char Tecla1,int x,int y){
         case '2':modo=EDGES;break;
         case '3':modo=SOLID;break;
         case '4':modo=SOLID_COLORS;break;
-        case '5':modo=COMPLETO; break;
-        case '6':modo=SOLID_FLAT; break;
-        case '7':modo=SOLID_SMOOTH; break;
+        case '0':modo=COMPLETO; break;
+        case '5':modo=SOLID_FLAT; break;
+        case '6':modo=SOLID_SMOOTH; break;
 
         case 'C': t_objeto = CUBO; break;
         case 'E': t_objeto = ESFERA; break;
@@ -453,7 +453,6 @@ int main(int argc, char *argv[] ){
     perfil.push_back(aux);
     aux.x=1.5; aux.y=1.2; aux.z=0.0;
     perfil.push_back(aux);
-
 
     rotacion.parametros(perfil,6,0,1,1);
 

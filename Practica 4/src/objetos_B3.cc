@@ -157,8 +157,10 @@ void _triangulos3D::calcular_normales_vertices(){
   float modulo;
   n_v=vertices.size();
   normales_vertices.resize(n_v);
-  for(int i=0;i<n_c;++i){
-    normales_vertices[i]=_vertex3f(0.0,0.0,0.0);
+  for(int i=0;i<n_v;++i){
+    normales_vertices[i].x=0.0;
+    normales_vertices[i].y=0.0;
+    normales_vertices[i].z=0.0;
   }
   n_c=caras.size();
   for(int i=0; i<n_c; ++i){
@@ -173,8 +175,7 @@ void _triangulos3D::calcular_normales_vertices(){
       normales_vertices[i].x/=modulo;
       normales_vertices[i].y/=modulo;
       normales_vertices[i].z/=modulo;
-    }
-
+  }
 }
 
 
@@ -328,7 +329,7 @@ _piramide::_piramide(float tam, float al){
 
   // normales
   calcular_normales_caras();
-calcular_normales_vertices();
+  calcular_normales_vertices();
   //colores de las caras
   colors_random();
 }
@@ -483,7 +484,6 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int tipo, int tapa
     c+=1;
   }
 
-  // normales
   calcular_normales_caras();
   if (tipo==2){ // esfera
     float modulo;

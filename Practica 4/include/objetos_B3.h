@@ -68,9 +68,7 @@ public:
        _vertex4f especular; // coeficiente especular
        float brillo; // exponente del brillo
 };
-/* Calcular normales*/
 
-void   calcular_normales_caras();
 //*************************************************************************
 // objetos o modelos
 //*************************************************************************
