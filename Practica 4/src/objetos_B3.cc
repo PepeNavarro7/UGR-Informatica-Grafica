@@ -29,9 +29,29 @@ void _puntos3D::draw_puntos(float r, float g, float b, int grosor){
 // _triangulos3D
 //*************************************************************************
 _triangulos3D::_triangulos3D(){
-  ambiente_difuso=_vertex4f(0.9,0.5,0.1,1.0);
-  especular=_vertex4f(0.5,0.5,0.5,1.0);
-  brillo=110.0;
+  // Estos valores los podria odificar en cada parte del modelo jerarquico
+  typedef enum {BLANCO,OBSIDIANA, ESMERALDA} _color;
+  _color color = ESMERALDA;
+  switch(color){
+    case BLANCO:
+      ambiente ={ 0.05f,0.05f,0.05f,1.0f };
+      difuso ={ 0.5f,0.5f,0.5f,1.0f};
+      especular ={ 0.7f,0.7f,0.7f,1.0f};
+      brillo = 10.0f;
+      break;
+    case OBSIDIANA:
+      ambiente ={ 0.05375f, 0.05f, 0.06625f, 0.82f };
+      difuso ={ 0.18275f, 0.17f, 0.22525f, 0.82f};
+      especular ={0.332741f, 0.328634f, 0.346435f, 0.82f };
+      brillo =38.4f ;
+      break;
+    case ESMERALDA:
+      ambiente ={ 0.0215f, 0.1745f, 0.0215f, 0.55f };
+      difuso ={0.07568f, 0.61424f, 0.07568f, 0.55f };
+      especular ={0.633f, 0.727811f, 0.633f, 0.55f };
+      brillo = 76.8f;
+  }
+  
 }
 
 
@@ -84,7 +104,8 @@ void _triangulos3D::draw_solido_plano(){
   glShadeModel(GL_FLAT);
   glEnable(GL_NORMALIZE); // esto no se si esta bien
 
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difuso);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (GLfloat *) &ambiente);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (GLfloat *) &difuso);
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,(GLfloat *) &especular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,brillo);
 
@@ -105,7 +126,8 @@ void _triangulos3D::draw_solido_suave(){
   glShadeModel(GL_SMOOTH);
   glEnable(GL_NORMALIZE); // esto no se si esta bien
 
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, (GLfloat *) &ambiente_difuso);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (GLfloat *) &ambiente);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (GLfloat *) &difuso);
   glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,(GLfloat *) &especular);
   glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS,brillo);
 

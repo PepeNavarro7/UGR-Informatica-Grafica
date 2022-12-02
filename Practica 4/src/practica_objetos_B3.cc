@@ -19,7 +19,7 @@ using namespace std;
 typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, CILINDRO, CONO, ESFERA, EXTRUSION, 
                 EXCAVADORA, JIRAFA} _tipo_objeto;
 _tipo_objeto t_objeto=JIRAFA;
-_modo   modo=COMPLETO;
+_modo   modo=SOLID_SMOOTH;
 
 // variables que definen la posicion de la camara en coordenadas polares
 GLfloat Observer_distance;
@@ -220,13 +220,14 @@ void draw_objects(){
 //***************************************************************************
 void luces(float alfa){
     
-    GLfloat luz_ambiente[] = {0.1,0.1,0.1,1.0},
+    GLfloat luz_ambiente[] = {0.2,0.2,0.20,1.0},
     luz_difusa[] = {1.0,1.0,1.0,1.0},
-    luz_posicion[] = {0.0,10.0,20.0,1.0};
+    luz_especular[] = {1.0,1.0,1.0,1.0},
+    luz_posicion[] = {20.0,10.0,5.0,1.0};
 
     glLightfv(GL_LIGHT1,GL_AMBIENT,luz_ambiente);
     glLightfv(GL_LIGHT1,GL_DIFFUSE,luz_difusa);
-    glLightfv(GL_LIGHT1,GL_SPECULAR,luz_difusa);
+    glLightfv(GL_LIGHT1,GL_SPECULAR,luz_especular);
     glPushMatrix();
         glRotatef(alfa,0,1,0);
     glPopMatrix();
@@ -234,6 +235,7 @@ void luces(float alfa){
 
     glDisable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHTING);
 }
 
 
@@ -297,7 +299,7 @@ void normal_key(unsigned char Tecla1,int x,int y){
         case 'X': t_objeto = EXTRUSION; break;
         
         
-        case 'H': t_objeto = EXCAVADORA; break;
+        //case 'H': t_objeto = EXCAVADORA; break; La excavadora hace segmentation fault
         case 'A': t_objeto = JIRAFA; break;
 
         case 'S':

@@ -44,8 +44,7 @@ public:
        vector<_vertex3f> normales_vertices; // xyz del vector normal a cada vertice
 
        // material
-       _vertex4f ambiente_difuso; // coeficientes ambinete y difuso
-       _vertex4f especular; // coeficiente especular
+       _vertex4f ambiente, difuso, especular; // coeficientes ambinete, difuso yespecular
        float brillo; // exponente del brillo
        _triangulos3D();
        void 	draw_aristas(float r, float g, float b, int grosor);
