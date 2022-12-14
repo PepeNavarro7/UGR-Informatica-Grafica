@@ -49,6 +49,7 @@ _jirafa jirafa;
 
 float giro_luz=0.0;
 int estadoRaton, xc, yc;
+int cambio=0;
 
 
 
@@ -56,6 +57,7 @@ int estadoRaton, xc, yc;
 // Animacion
 // A traves de flags, definimos los giros maximos y la vuelta de los giros
 int paso=0;
+float velocidad = 0.1;
 bool animado=false;
 bool flag_cola=true, flag_cabeza=true;
 void animacion(){
@@ -69,29 +71,29 @@ void animacion(){
             jirafa.giro_cabeza=-60;
             paso=1;
         case 1: 
-            jirafa.giro_cuerpo+=1;
+            jirafa.giro_cuerpo+=1*velocidad;
             if(jirafa.giro_cuerpo>=140){
                 jirafa.giro_cuerpo=140;
                 paso=2;
             }
             break;
         case 2:
-            jirafa.giro_cuello_1+=0.5;
+            jirafa.giro_cuello_1+=0.5*velocidad;
             if(jirafa.giro_cuello_1>=jirafa.giro_cuello_1_max){
                 jirafa.giro_cuello_1=jirafa.giro_cuello_1_max;
                 paso=3;
             }
         break;
         case 3:
-            jirafa.giro_cuello_2+=0.5;
+            jirafa.giro_cuello_2+=0.5*velocidad;
             if(jirafa.giro_cuello_2>=jirafa.giro_cuello_2_max){
                 jirafa.giro_cuello_2=jirafa.giro_cuello_2_max;
                 paso=4;
             }
         break;
         case 4:
-            jirafa.giro_cuello_2-=0.5;
-            jirafa.giro_cuello_1-=0.5;
+            jirafa.giro_cuello_2-=0.5*velocidad;
+            jirafa.giro_cuello_1-=0.5*velocidad;
             if(jirafa.giro_cuello_2<=jirafa.giro_cuello_2_min){
                 jirafa.giro_cuello_2=jirafa.giro_cuello_2_min;
                 paso=5;
@@ -103,26 +105,26 @@ void animacion(){
         break;
         default:
             if(flag_cola){
-                jirafa.giro_cola+=1;
+                jirafa.giro_cola+=1*velocidad;
                 if (jirafa.giro_cola >= jirafa.giro_cola_max){
                     jirafa.giro_cola = jirafa.giro_cola_max;
                     flag_cola=false;
                 }
             } else{
-                jirafa.giro_cola-=1;
+                jirafa.giro_cola-=1*velocidad;
                 if (jirafa.giro_cola <= jirafa.giro_cola_min){
                     jirafa.giro_cola = jirafa.giro_cola_min;
                     flag_cola=true;
                 }
             }
             if(flag_cabeza){
-                jirafa.giro_cabeza+=0.25;
+                jirafa.giro_cabeza+=0.25*velocidad;
                 if (jirafa.giro_cabeza >= jirafa.giro_cabeza_max){
                     jirafa.giro_cabeza = jirafa.giro_cabeza_max;
                     flag_cabeza=false;
                 }
             } else{
-                jirafa.giro_cabeza-=0.25;
+                jirafa.giro_cabeza-=0.25*velocidad;
                 if (jirafa.giro_cabeza <= jirafa.giro_cabeza_min){
                     jirafa.giro_cabeza = jirafa.giro_cabeza_min;
                     flag_cabeza=true;
@@ -215,6 +217,14 @@ void draw_objects(){
     }
 }
 
+void vista_orto(){
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    // formato(x_minimo,x_maximo, y_minimo, y_maximo,plano_delantero, plano_traser)
+    //  plano_delantero>0  plano_trasero>PlanoDelantero)
+    glOrtho(-Size_x,Size_x,-Size_y,Size_y,Front_plane,Back_plane);
+}
 
 //**************************************************************************
 //
@@ -239,19 +249,24 @@ void luces(float alfa){
 
 
 void draw(void){
-    glDrawBuffer(GL_FRONT);
-    clean_window();
-    change_observer();
-    luces(giro_luz);
-    draw_axis();
-    draw_objects();
-    if (t_objeto==JIRAFA){
-        glDrawBuffer(GL_BACK);
+    //if(cambio==0){
+        //glViewport(0,0,Ancho,Alto);
+        //change_projection();
+        glDrawBuffer(GL_FRONT);
         clean_window();
         change_observer();
-        jirafa.seleccion();
+        luces(giro_luz);
+        draw_axis();
+        draw_objects();
+        
+    //} else vista_orto();
+    if (t_objeto==JIRAFA){
+            glDrawBuffer(GL_BACK);
+            clean_window();
+            change_observer();
+            jirafa.seleccion();
     }
-    glFlush(); // ya no se usan los dobles buffers
+    glFlush(); // ya no se usan los dobles buffers    
 }
 
 
@@ -420,7 +435,7 @@ int i;
 for (i=0;i<jirafa.piezas;i++)
    {if (color[0]==jirafa.color_select[i].r &&
         color[1]==jirafa.color_select[i].g &&
-        color[2]==jirafa.color_select[i].r)
+        color[2]==jirafa.color_select[i].b)
        {if (jirafa.activo[i]==0) 
                       {jirafa.activo[i]=1;
                       }
@@ -445,16 +460,14 @@ void pick_color(int x, int y){
 }
 
 void clickRaton( int boton, int estado, int x, int y ){
-if(boton==GLUT_RIGHT_BUTTON) 
-  {
-   if(estado==GLUT_DOWN) 
-     {
-      estadoRaton=1;
-      xc=x;
-      yc=y;
-     } 
-   else estadoRaton=0;
-   }
+    if(boton==GLUT_RIGHT_BUTTON){
+        if(estado==GLUT_DOWN){
+            estadoRaton=1;
+            xc=x;
+            yc=y;
+        } else 
+            estadoRaton=0;
+    }
 if(boton==GLUT_LEFT_BUTTON) 
   {
    if(estado==GLUT_DOWN) 

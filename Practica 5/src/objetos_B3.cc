@@ -135,12 +135,11 @@ void _triangulos3D::draw_solido_suave(){
 // dibujar en modo seleccion
 //*************************************************************************
 void _triangulos3D::draw_seleccion(int r, int g, int b){
-int i;
 
 glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 glColor3ub(r,g,b);
 glBegin(GL_TRIANGLES);
-for (i=0;i<caras.size();i++){
+for (long unsigned int i=0;i<caras.size();i++){
 	glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
 	glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
 	glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
@@ -215,7 +214,7 @@ void _triangulos3D::draw(_modo modo, float r, float g, float b, float grosor){
       break;
     case SOLID_FLAT: draw_solido_plano(); break;
     case SOLID_SMOOTH: draw_solido_suave(); break;
-    case SELECT: draw_seleccion(1.0,0.0,0.0); break;
+    case SELECT: draw_seleccion(r,g,b); break;
 	}
 }
 
